@@ -1,6 +1,7 @@
 import React from 'react';
 import Definition from './components/Definition/index';
 import Name from './components/Name/index';
+import './styles.css';
 
 class Tile extends React.Component {
 	constructor(props) {
@@ -9,7 +10,7 @@ class Tile extends React.Component {
 
 	render() {
 		return (
-			<div>
+			<div className='tile'>
 				<Name name={this.props.name} />
 				<Definition definition={this.props.definition} />
 			</div>
