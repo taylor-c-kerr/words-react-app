@@ -45,12 +45,8 @@ class App extends React.Component {
         <br />
         From database:
         {words.map(word => {
-          return <div>{`id: ${word.id}, name: ${word.name}, definition: ${word.definition}`}</div>
+          return <Tile name={word.name} definition={word.definition}/>
         })}
-        <br />
-        From component:
-        <Tile name="Pineapple" definition="yellow spikey thing" />
-        <Tile name="Orange" definition="what came first, the color or the fruit?" />
       </div>
     );
 
