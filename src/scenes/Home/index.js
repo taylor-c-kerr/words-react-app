@@ -1,12 +1,11 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import WordsApi from './services/WordsApi/index';
-import Tile from './components/Tile/index';
-import Header from './components/Header/index';
-import Footer from './components/Footer/index';
+import './styles.css';
+import WordsApi from '../../services/WordsApi/index';
+import Tile from '../../components/Tile/index';
+import Header from '../../components/Header/index';
+import Footer from '../../components/Footer/index';
 
-class App extends React.Component {
+class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -53,4 +52,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default Home;
