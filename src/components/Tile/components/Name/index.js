@@ -9,7 +9,7 @@ class Name extends React.Component {
   render() {
     return (
       <div className='name'>
-        Name: {this.props.name}
+        {this.props.name}
       </div>
     );
 
