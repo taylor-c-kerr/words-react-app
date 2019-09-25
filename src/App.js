@@ -4,6 +4,7 @@ import './App.css';
 import WordsApi from './services/WordsApi/index';
 import Tile from './components/Tile/index';
 import Header from './components/Header/index';
+import Footer from './components/Footer/index';
 
 class App extends React.Component {
   constructor(props) {
@@ -45,6 +46,7 @@ class App extends React.Component {
         {words.map(word => {
           return <Tile name={word.name} definition={word.definition}/>
         })}
+        <Footer />
       </div>
     );
 
