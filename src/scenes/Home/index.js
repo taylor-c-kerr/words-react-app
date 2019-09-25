@@ -43,7 +43,7 @@ class Home extends React.Component {
       <div className="App">
         <Header />
         {words.map(word => {
-          return <Tile name={word.name} definition={word.definition}/>
+          return <Tile name={word.name} definition={word.definition} key={word.id}/>
         })}
         <Footer />
       </div>

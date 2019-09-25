@@ -10,7 +10,7 @@ class Definition extends React.Component {
     const {definition} = this.props;
     return (
       <div className='definition'>
-        Definition: {definition.map(def => <div>{def}</div>)}
+        Definition: {definition.map((def, i) => <div key={i}>{def}</div>)}
       </div>
     );
 
