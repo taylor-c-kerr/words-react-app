@@ -12,7 +12,8 @@ class Tile extends React.Component {
 		return (
 			<div className='tile'>
 				<Name name={this.props.name} />
-				<Definition definition={this.props.definition} />
+				<Definition definition={this.props.definition}
+				key={this.props.id} />
 			</div>
 		)
 	}
