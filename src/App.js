@@ -2,7 +2,8 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import WordsApi from './services/WordsApi/index';
-import Tile from './components/Tile/index'
+import Tile from './components/Tile/index';
+import Header from './components/Header/index';
 
 class App extends React.Component {
   constructor(props) {
@@ -40,9 +41,7 @@ class App extends React.Component {
     }
     return (
       <div className="App">
-        <img src={logo} className='App-logo' alt='logo' />
-        <div>Thoughtful Moose</div>
-        <br />
+        <Header />
         {words.map(word => {
           return <Tile name={word.name} definition={word.definition}/>
         })}
