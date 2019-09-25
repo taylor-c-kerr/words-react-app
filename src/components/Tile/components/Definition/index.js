@@ -1,6 +1,6 @@
 import React from 'react';
 
-class Name extends React.Component {
+class Definition extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -8,11 +8,11 @@ class Name extends React.Component {
   render() {
     return (
       <div>
-        Name: {this.props.name}
+        Definition: {this.props.definition}
       </div>
     );
 
   }
 }
 
-export default Name;
+export default Definition;
