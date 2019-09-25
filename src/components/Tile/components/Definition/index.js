@@ -5,11 +5,12 @@ class Definition extends React.Component {
   constructor(props) {
     super(props);
   }
-  
+
   render() {
+    const {definition} = this.props;
     return (
       <div className='definition'>
-        Definition: {this.props.definition}
+        Definition: {definition.map(def => <div>{def}</div>)}
       </div>
     );
 
