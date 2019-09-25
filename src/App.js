@@ -50,6 +50,7 @@ class App extends React.Component {
         <br />
         From component:
         <Tile name="Pineapple" definition="yellow spikey thing" />
+        <Tile name="Orange" definition="what came first, the color or the fruit?" />
       </div>
     );
 
