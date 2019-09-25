@@ -43,7 +43,6 @@ class App extends React.Component {
         <img src={logo} className='App-logo' alt='logo' />
         <div>Thoughtful Moose</div>
         <br />
-        From database:
         {words.map(word => {
           return <Tile name={word.name} definition={word.definition}/>
         })}
