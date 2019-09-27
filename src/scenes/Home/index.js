@@ -1,9 +1,6 @@
 import React from 'react';
-import './styles.css';
 import WordsApi from '../../services/WordsApi/index';
 import Tile from '../../components/Tile/index';
-import Header from '../../components/Header/index';
-import Footer from '../../components/Footer/index';
 
 class Home extends React.Component {
   constructor(props) {
@@ -34,18 +31,16 @@ class Home extends React.Component {
   render() {
     const { words, isLoaded, error } = this.state;
     if (!isLoaded) {
-      return <div className="App">LOADING...</div>
+      return <div>LOADING...</div>
     }
     if (error) {
-      return <div className="App">{error}</div>
+      return <div>{error}</div>
     }
     return (
-      <div className="App">
-        <Header />
+      <div>
         {words.map(word => {
           return <Tile name={word.name} definition={word.definition} key={word.id}/>
         })}
-        <Footer />
       </div>
     );
 
