@@ -1,5 +1,7 @@
 import React from 'react';
 import WordsApi from '../../services/WordsApi/index';
+import Name from './components/Name/index';
+import Definition from './components/Definition/index';
 
 class Word extends React.Component {
 	constructor(props) {
@@ -39,7 +41,8 @@ class Word extends React.Component {
 		}
 
 		return <div>
-			<h2>{word.name}</h2>
+			<Name name={word.name} />
+			<Definition definition={word.definition} />
 		</div>
 	}
 }
