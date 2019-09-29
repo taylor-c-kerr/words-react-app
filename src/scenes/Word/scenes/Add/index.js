@@ -1,4 +1,5 @@
 import React from 'react';
+import Input from '../../../../components/Input/index'
 
 class Add extends React.Component {
 	constructor(props) {
@@ -7,11 +8,19 @@ class Add extends React.Component {
 			name: '',
 			definition: []
 		}
+		this.getInputValue = this.getInputValue.bind(this)
+	}
+
+	getInputValue(value) {
+		this.setState(value);
 	}
 
 	render() {
 		return (
-			<div>HEY, I AM ABLE TO ADD A WORD NOW!!! WOOT!</div>
+			<div>
+				<Input name='Name' value={this.getInputValue}/>
+				<Input name='Definition' value={this.getInputValue}/>
+			</div>
 		)
 	}
 }
