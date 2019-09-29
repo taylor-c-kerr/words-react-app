@@ -1,6 +1,7 @@
 import React from 'react';
 import WordsApi from '../../services/WordsApi/index';
 import Tile from '../../components/Tile/index';
+import AddWordButton from '../../components/AddWordButton/index';
 
 class Home extends React.Component {
   constructor(props) {
@@ -38,6 +39,7 @@ class Home extends React.Component {
     }
     return (
       <div>
+        <AddWordButton />
         {words.map((word, i) => {
           return <Tile name={word.name} definition={word.definition} id={word.id} key={`tile-${i}`}/>
         })}
