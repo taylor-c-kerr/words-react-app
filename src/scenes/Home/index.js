@@ -38,8 +38,8 @@ class Home extends React.Component {
     }
     return (
       <div>
-        {words.map(word => {
-          return <Tile name={word.name} definition={word.definition} key={word.id}/>
+        {words.map((word, i) => {
+          return <Tile name={word.name} definition={word.definition} id={word.id} key={`tile-${i}`}/>
         })}
       </div>
     );
