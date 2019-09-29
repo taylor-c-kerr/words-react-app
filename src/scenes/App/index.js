@@ -12,8 +12,8 @@ class App extends React.Component{
 		const router = <Router>
 			<div>
 				<Route exact path="/" component={Home} />
-				<Route path="/:id" component={Word}/>
-				<Route path="/add" component={Word}/>
+				<Route path="/word/:id" component={Word}/>
+				<Route path="/add" component={AddWord}/>
 			</div>
 		</Router>;
 
