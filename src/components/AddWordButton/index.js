@@ -18,6 +18,8 @@ class AddWordButton extends React.Component {
 		if (this.state.isClicked) {
 			return <Redirect push to='/add' />
 		}
-		return <div>ADD WORD</div>
+		return <div onClick={this.handleClick}>ADD WORD</div>
 	}
 }
+
+export default AddWordButton;
