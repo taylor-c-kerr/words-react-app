@@ -9,6 +9,10 @@ class WordsApi {
 	async getWord(id) {
 		return await axios.get(`${BASE_URL}/words/${id}`);
 	}
+
+	async postWord(word) {
+		return await axios.post(`${BASE_URL}/words`, word)
+	}
 }
 
 export default new WordsApi();
