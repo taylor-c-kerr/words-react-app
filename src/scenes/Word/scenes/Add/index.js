@@ -11,49 +11,60 @@ class Add extends React.Component {
 		this.state = {
 			id: '',
 			name: '',
-			definition: [],
+			definition: [''],
 			isSubmitted: false
 		}
 
 		this.getInputValue = this.getInputValue.bind(this);
-		this.handleClick = this.handleClick.bind(this);
+		this.handleSubmit = this.handleSubmit.bind(this);
+		this.displayDefinition = this.displayDefinition.bind(this);
 	}
 
-	getInputValue(value) {
+	getInputValue(value, index=null) {
 		if (value.definition) {
-			// this.setState({definition: [value.definition]})
-			console.log([value.definition]);
-			value.definition = [value.definition];
+			let {definition} = this.state;
+			definition[index] = value.definition;
+			this.setState({definition: definition})
 		}
+		else {
 			this.setState(value);
-		
+		}
 	}
 
-	async handleClick(e) {
+	async handleSubmit(e) {
 		try {
 			await WordsApi.postWord(this.state);
 			this.setState({isSubmitted: true})
-			
 		}
 		catch (error) {
 			alert(error)
 		}
 	}
 
+	displayDefinition(defs) {
+		// console.log(defs);
+		return defs.map((def, i) => {
+			return <Input name='definition' updateValue={this.getInputValue} defaultValue={def} index={i}/>
+		})
+	}
+
 	render() {
-		if (!this.state.id) {
+		const {id, isSubmitted, definition} = this.state;
+		if (!id) {
 			this.setState({id: uuidv4()})
 		}
 
-		if (this.state.isSubmitted) {
+		if (isSubmitted) {
 			return <Redirect push to='/' />;
 		}
 
 		return (
 			<div onSubmit={this.handleSubmit}>
-				<Input name='name' value={this.getInputValue}/>
-				<Input name='definition' value={this.getInputValue}/>
-				<Button onClick={this.handleClick} value='save' />
+				<Input name='name' updateValue={this.getInputValue}/>
+				{/*<Input name='definition' value={this.getInputValue}/>*/}
+				{this.displayDefinition(definition)}
+				<Button onClick={() => this.setState({definition: [...definition, '']})} value='add definition' />
+				<Button onClick={this.handleSubmit} value='save' />
 			</div>
 		)
 	}
