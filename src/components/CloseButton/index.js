@@ -12,7 +12,6 @@ class CloseButton extends React.Component {
 	}
 
 	handleClick(e) {
-		console.log(e);
 		this.setState({isClicked: true});
 	}
 
