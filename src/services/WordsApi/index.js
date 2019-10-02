@@ -11,7 +11,11 @@ class WordsApi {
 	}
 
 	async postWord(word) {
-		return await axios.post(`${BASE_URL}/words`, word)
+		return await axios.post(`${BASE_URL}/words`, word);
+	}
+
+	async deleteWord(id) {
+		return await axios.delete(`${BASE_URL}/words/${id}`);
 	}
 }
 
