@@ -32,7 +32,6 @@ class Word extends React.Component {
 	}
 
 	render() {
-		console.log('render');
 		const {word, isLoaded, error} = this.state;
 
 		if (!isLoaded) {
