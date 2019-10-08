@@ -3,7 +3,6 @@ import WordsApi from '../../services/WordsApi/index';
 import Name from './components/Name/index';
 import Definition from './components/Definition/index';
 import CloseButton from '../../components/CloseButton/index.js';
-import { Redirect } from 'react-router-dom';
 
 class Word extends React.Component {
 	constructor(props) {

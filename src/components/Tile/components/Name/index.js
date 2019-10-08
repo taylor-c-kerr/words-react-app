@@ -1,11 +1,7 @@
 import React from 'react';
 import './styles.css';
 
-class Name extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-  
+class Name extends React.Component {  
   render() {
     return (
       <div className='name'>
