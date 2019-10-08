@@ -12,16 +12,18 @@ class Add extends React.Component {
 			id: '',
 			name: '',
 			definition: [''],
-			isSubmitted: false
+			isSubmitted: false,
+			inputValue: ''
 		}
 
 		this.getInputValue = this.getInputValue.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.displayDefinition = this.displayDefinition.bind(this);
+		this.addDefinition = this.addDefinition.bind(this);
 	}
 
 	getInputValue(value, index=null) {
-		if (value.definition) {
+		if ('definition' in value) {
 			let {definition} = this.state;
 			definition[index] = value.definition;
 			this.setState({definition: definition})
@@ -29,29 +31,47 @@ class Add extends React.Component {
 		else {
 			this.setState(value);
 		}
+
 	}
 
 	async handleSubmit(e) {
 		try {
-			await WordsApi.postWord(this.state);
+			const {name, id, definition} = this.state;
+			const word = {id, name, definition}
+			await WordsApi.postWord(word);
 			this.setState({isSubmitted: true})
 		}
 		catch (error) {
+			console.log(error);
 			alert(error)
 		}
 	}
 
-	displayDefinition(defs) {
-		// console.log(defs);
-		return defs.map((def, i) => {
-			return <Input name='definition' updateValue={this.getInputValue} defaultValue={def} index={i}/>
+	displayDefinition() {
+		let {definition} = this.state;
+		if (!definition) {
+			definition = ['']
+		}
+
+		return definition.map((def, i) => {
+			return <Input name='definition' updateValue={this.getInputValue} defaultValue={def} index={i} key={`def-input-${i}`}/>
+		})
+	}
+
+	addDefinition() {
+		const {definition} = this.state
+
+		this.setState({
+			definition: [...definition, '']
 		})
 	}
 
 	render() {
-		const {id, isSubmitted, definition} = this.state;
+		const {id, isSubmitted} = this.state;
+		const {definition} = this.state;
+		const {definitionsToDisplay} = this.displayDefinition();
 		if (!id) {
-			this.setState({id: uuidv4()})
+			this.setState({id: uuidv4()})  // TODO: not supposed to set state here, so an error is thrown
 		}
 
 		if (isSubmitted) {
@@ -59,11 +79,10 @@ class Add extends React.Component {
 		}
 
 		return (
-			<div onSubmit={this.handleSubmit}>
+			<div>
 				<Input name='name' updateValue={this.getInputValue}/>
-				{/*<Input name='definition' value={this.getInputValue}/>*/}
-				{this.displayDefinition(definition)}
-				<Button onClick={() => this.setState({definition: [...definition, '']})} value='add definition' />
+				{definition.map((def,i) => <Input name='definition' updateValue={this.getInputValue} defaultValue={def} index={i} key={`def-input-${i}`}/>)}
+				<Button onClick={this.addDefinition} value='add definition' />
 				<Button onClick={this.handleSubmit} value='save' />
 			</div>
 		)
