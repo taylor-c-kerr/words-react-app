@@ -1,10 +1,9 @@
 import React from 'react';
 import Input from '../../../../components/Input/index';
 import Button from '../../../../components/Button/index';
-import WordsApi from '../../../../services/WordsApi/index';
-import uuidv4 from 'uuid/v4';
+import WordsApi from '../../../../services/api/WordsApi/index';
 import {Redirect} from 'react-router-dom'
-
+import Validate from '../../../../services/validation/index'
 class Add extends React.Component {
 	constructor(props) {
 		super(props);
@@ -35,9 +34,8 @@ class Add extends React.Component {
 
 	async handleSubmit(e) {
 		try {
-			const {name, id, definition} = this.state;
-			const word = {id, name, definition}
-			await WordsApi.postWord(word);
+			const data = Validate.form(this.state);
+			await WordsApi.postWord(data);
 			this.setState({isSubmitted: true})
 		}
 		catch (error) {
@@ -55,12 +53,8 @@ class Add extends React.Component {
 	}
 
 	render() {
-		const {id, isSubmitted} = this.state;
+		const {isSubmitted} = this.state;
 		const {definition} = this.state;
-
-		if (!id) {
-			this.setState({id: uuidv4()})  // TODO: not supposed to set state here, so an error is thrown
-		}
 
 		if (isSubmitted) {
 			return <Redirect push to='/' />;
