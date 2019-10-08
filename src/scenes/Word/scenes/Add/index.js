@@ -18,7 +18,6 @@ class Add extends React.Component {
 
 		this.getInputValue = this.getInputValue.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
-		this.displayDefinition = this.displayDefinition.bind(this);
 		this.addDefinition = this.addDefinition.bind(this);
 	}
 
@@ -47,17 +46,6 @@ class Add extends React.Component {
 		}
 	}
 
-	displayDefinition() {
-		let {definition} = this.state;
-		if (!definition) {
-			definition = ['']
-		}
-
-		return definition.map((def, i) => {
-			return <Input name='definition' updateValue={this.getInputValue} defaultValue={def} index={i} key={`def-input-${i}`}/>
-		})
-	}
-
 	addDefinition() {
 		const {definition} = this.state
 
@@ -69,7 +57,7 @@ class Add extends React.Component {
 	render() {
 		const {id, isSubmitted} = this.state;
 		const {definition} = this.state;
-		const {definitionsToDisplay} = this.displayDefinition();
+
 		if (!id) {
 			this.setState({id: uuidv4()})  // TODO: not supposed to set state here, so an error is thrown
 		}
