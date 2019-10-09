@@ -1,8 +1,10 @@
 import React from 'react';
-import WordsApi from '../../services/WordsApi/index';
+import WordsApi from '../../services/api/WordsApi/index';
 import Name from './components/Name/index';
 import Definition from './components/Definition/index';
 import CloseButton from '../../components/CloseButton/index.js';
+import {Redirect} from 'react-router-dom';
+// import AddWordButton from '../../components/AddWordButton/index.js';
 
 class Word extends React.Component {
 	constructor(props) {
@@ -10,7 +12,8 @@ class Word extends React.Component {
 		this.state = {
 			isLoaded: false,
 			word: null,
-			error: false
+			error: false,
+			isInEditMode: false
 		}
 	}
 
@@ -31,8 +34,18 @@ class Word extends React.Component {
 		}
 	}
 
+	handleClick(e) {
+		this.setState({
+			isInEditMode: true
+		})
+	}
+
 	render() {
-		const {word, isLoaded, error} = this.state;
+		const {word, isLoaded, error, isInEditMode} = this.state;
+
+		if (isInEditMode) {
+			return <Redirect push to={`/word/${this.props.match.params.id}/edit`} />
+		}
 
 		const content = error ? <div>THERE WAS AN ERROR</div> 
 		: !isLoaded ? <div>LOADING...</div> 
@@ -40,6 +53,10 @@ class Word extends React.Component {
 
 		return <div>
 			{content}
+			{
+				!isInEditMode ? <button onClick={this.handleClick.bind(this)}>EDIT</button>
+				: <button>SAVE</button>
+			}
 			<CloseButton />
 		</div>
 	}

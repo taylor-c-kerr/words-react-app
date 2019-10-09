@@ -1,5 +1,5 @@
 import React from 'react';
-import WordsApi from '../../services/WordsApi/index';
+import WordsApi from '../../services/api/WordsApi/index';
 import Tile from '../../components/Tile/index';
 import AddWordButton from '../../components/AddWordButton/index';
 
