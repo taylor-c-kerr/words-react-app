@@ -17,6 +17,10 @@ class WordsApi {
 	async deleteWord(id) {
 		return await axios.delete(`${BASE_URL}/words/${id}`);
 	}
+
+	async updateWord(word) {
+		return await axios.put(`${BASE_URL}/words/${word.id}`, word);
+	}
 }
 
 export default new WordsApi();
