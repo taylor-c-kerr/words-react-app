@@ -3,8 +3,7 @@ import WordsApi from '../../services/api/WordsApi/index';
 import Name from './components/Name/index';
 import Definition from './components/Definition/index';
 import CloseButton from '../../components/CloseButton/index.js';
-import {Redirect} from 'react-router-dom';
-// import AddWordButton from '../../components/AddWordButton/index.js';
+import Validate from '../../services/validation/index'
 
 class Word extends React.Component {
 	constructor(props) {
@@ -13,8 +12,13 @@ class Word extends React.Component {
 			isLoaded: false,
 			word: null,
 			error: false,
-			isInEditMode: false
+			hasBeenEdited: false,
+			isSubmitted: false,
+			form: null
 		}
+
+		this.getUpdatedDefinitions = this.getUpdatedDefinitions.bind(this);
+		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
 	async componentDidMount() {
@@ -34,29 +38,63 @@ class Word extends React.Component {
 		}
 	}
 
-	handleClick(e) {
+	getUpdatedDefinitions(definition) {
+		const {word} = this.state;
+
 		this.setState({
-			isInEditMode: true
+			form: {
+				name: word.name,
+				id: word.id,
+				definition: definition
+			}
 		})
+
+		if (definition !== this.state.word.definition) {
+			this.setState({
+				hasBeenEdited: true
+			})
+		}
+	}
+
+	async handleSubmit(e) {
+		const {form} = this.state;
+		try {
+			const data = Validate.form(form);
+			await WordsApi.updateWord(data)
+			this.setState({
+				isSubmitted: true,
+				hasBeenEdited: false
+			})
+		}
+		catch (error) {
+			console.log(error);
+			alert(error);
+		}
+
+
 	}
 
 	render() {
-		const {word, isLoaded, error, isInEditMode} = this.state;
+		const {word, isLoaded, error, hasBeenEdited, isSubmitted} = this.state;
+		let content;
 
-		if (isInEditMode) {
-			return <Redirect push to={`/word/${this.props.match.params.id}/edit`} />
+		if (error) {
+			content = <div>THERE WAS AN ERROR</div>;
 		}
-
-		const content = error ? <div>THERE WAS AN ERROR</div> 
-		: !isLoaded ? <div>LOADING...</div> 
-		: <div><Name name={word.name} /><Definition definition={word.definition} /></div>;
+		else if (!isLoaded) {
+			content = <div>LOADING...</div> ;
+		}
+		else {
+			content = 
+			<div>
+				<Name name={word.name} />
+				<Definition definition={word.definition} sendDefinitions={this.getUpdatedDefinitions}/>
+			</div>;
+		}
 
 		return <div>
 			{content}
-			{
-				!isInEditMode ? <button onClick={this.handleClick.bind(this)}>EDIT</button>
-				: <button>SAVE</button>
-			}
+			{hasBeenEdited ? <button onClick={this.handleSubmit}>SAVE</button> : null}
 			<CloseButton />
 		</div>
 	}
