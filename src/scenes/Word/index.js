@@ -48,18 +48,23 @@ class Word extends React.Component {
 				definition: newDefinition
 			}
 		})
-		
-		const hasBeenEdited = !newDefinition.every(def => definition.includes(def));
+
+		const haveSameDefinitions = newDefinition.every(def => definition.includes(def));
+		const haveSameLength = newDefinition.length === definition.length;		
+		const isTheSame = haveSameDefinitions && haveSameLength;
 
 		this.setState({
-			hasBeenEdited: hasBeenEdited
+			hasBeenEdited: !isTheSame
 		})
 
 
 	}
 
 	async handleSubmit(e) {
-		const {form} = this.state;
+		let {form} = this.state;
+		const {name, id} = this.state.word;
+		form = {...form, name, id}
+
 		try {
 			const data = Validate.form(form);
 			await WordsApi.updateWord(data)
