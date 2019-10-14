@@ -6,58 +6,50 @@ class Definition extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			hasChanged: false
+			definition: []
 		};
 		this.getValue = this.getValue.bind(this);
 		this.addDefinition = this.addDefinition.bind(this);
 	}
-	
-	getValue(value, index=null) {
-		let {definition} = this.state;
-		definition[index] = value.definition;
-		console.log(definition);
-		const hasChanged = !definition.every(d => this.props.definition.includes(d));
 
+	componentDidMount() {
+		const {definition} = this.props;
 		this.setState({
-			hasChanged: hasChanged
+			definition: definition
 		})
-
-		this.props.sendDefinitions(definition)
+	}
+	
+	getValue(value, index) {
+		let d = this.state.definition;
+		d[index] = value.definition;
+		this.setState({
+			definition: d
+		})
 	}
 
 	addDefinition() {
-		const {hasChanged} = this.state;
-		let definition;
-		if (this.state.definition) {
-			definition = this.state.definition;
-		}
-		else {
-			definition = this.props.definition;
-		}
-
+		const {definition} = this.state;
 		this.setState({
 			definition: [...definition, '']
 		})
 	}
 
 	render() {
-		const {definition} = this.state.definition ? this.state : this.props;
-		const {hasChanged} = this.state;
-
-		const definitions = definition.map((def, i) => {
-			return <Input 
-				name='definition' 
-				updateValue={this.getValue} // getting the <input> value from the child component
-				value={def} 
-				index={i} 
-				key={`def-input-${i}`}
-			/>
-		})
+		const {definition} = this.state;
 
 		return (
 			<div>
-				<div>{hasChanged ? <div>SAVE</div> : null}</div>
-				<div>{definitions}</div>
+				{
+				definition.map((def, i) => {
+					return <Input 
+						name='definition' 
+						updateValue={this.getValue} // getting the <input> value from the child component
+						value={def} 
+						index={i} 
+						key={`def-input-${i}`}
+					/>
+				})
+				}
 				<Button onClick={this.addDefinition} value='add definition' />
 			</div>
 		)
