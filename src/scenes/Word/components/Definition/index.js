@@ -25,6 +25,7 @@ class Definition extends React.Component {
 		this.setState({
 			definition: d
 		})
+		this.props.sendDefinitions(d);
 	}
 
 	addDefinition() {
