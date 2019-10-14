@@ -10,6 +10,7 @@ class Definition extends React.Component {
 		};
 		this.getValue = this.getValue.bind(this);
 		this.addDefinition = this.addDefinition.bind(this);
+		// this.deleteDefinition = this.deleteDefinition.bind(this, value, index);
 	}
 
 	componentDidMount() {
@@ -20,12 +21,12 @@ class Definition extends React.Component {
 	}
 	
 	getValue(value, index) {
-		let d = this.state.definition;
-		d[index] = value.definition;
+		let {definition} = this.state;
+		definition[index] = value.definition;
 		this.setState({
-			definition: d
+			definition: definition
 		})
-		this.props.sendDefinitions(d);
+		this.props.sendDefinitions(definition);
 	}
 
 	addDefinition() {
@@ -33,6 +34,14 @@ class Definition extends React.Component {
 		this.setState({
 			definition: [...definition, '']
 		})
+		this.props.sendDefinitions(definition);
+	}
+
+	deleteDefinition(value, index) {
+		let {definition} = this.state;
+		definition = definition.filter(def => def !== value);
+		this.setState({definition: definition});
+		this.props.sendDefinitions(definition);
 	}
 
 	render() {
@@ -41,15 +50,19 @@ class Definition extends React.Component {
 		return (
 			<div>
 				{
-				definition.map((def, i) => {
-					return <Input 
-						name='definition' 
-						updateValue={this.getValue} // getting the <input> value from the child component
-						value={def} 
-						index={i} 
-						key={`def-input-${i}`}
-					/>
-				})
+					definition.map((def, i) => {
+						return <div>
+							<Input 
+								name='definition' 
+								updateValue={this.getValue} // getting the <input> value from the child component
+								value={def} 
+								index={i} 
+								key={`def-input-${i}`}
+								canBeDeleted={true}
+								onDeleteClick={this.deleteDefinition.bind(this, def, i)}
+							/>
+						</div>	
+					})
 				}
 				<Button onClick={this.addDefinition} value='add definition' />
 			</div>

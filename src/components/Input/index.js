@@ -7,6 +7,7 @@ class Input extends React.Component {
 			value: ''
 		}
 		this.onChange = this.onChange.bind(this);
+		this.handleClick = this.handleClick.bind(this);
 	}
 
 	componentDidMount() {
@@ -23,14 +24,22 @@ class Input extends React.Component {
 		await this.props.updateValue(data, index)
 	}
 
+	handleClick(e) {
+		const {canBeDeleted} = this.props;
+		if (canBeDeleted) {
+			this.props.onDeleteClick()
+		}
+	}
+
 	render() {
-		const {name} = this.props;
+		const {name, canBeDeleted} = this.props;
 		const {value} = this.state;
 
 		return (
 			<div>
 				<label>{name.toUpperCase()}: </label>
 				<input name={name} type='text' onChange={this.onChange} value={value} />
+				{canBeDeleted ? <button onClick={this.handleClick} className='deleteButton'>Delete</button> : null}
 			</div>
 		)
 	}
