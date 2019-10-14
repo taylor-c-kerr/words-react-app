@@ -6,35 +6,31 @@ class Input extends React.Component {
 		this.state = {
 			value: ''
 		}
-
 		this.onChange = this.onChange.bind(this);
 	}
 
-	onChange(e) {
-		const {name, value} = e.target;
-		const {index} = this.props;
-		let data = {};
-		data[name] = value;
+	componentDidMount() {
+		const {value} = this.props;
 		this.setState({value: value})
-		this.props.updateValue(data, index)
 	}
 
-	componentDidMount() {
-		this.setState({
-			value: this.props.defaultValue
-		})
+	async onChange(e) {
+		const {index} = this.props;
+		const {name, value} = e.target;
+
+		let data = {[name]: value};
+		await this.setState({value:value})
+		await this.props.updateValue(data, index)
 	}
 
 	render() {
 		const {name} = this.props;
 		const {value} = this.state;
-		// const inputValue = this.state.value ? this.state.value : defaultValue;
-		// console.log(value);
 
 		return (
 			<div>
 				<label>{name.toUpperCase()}: </label>
-				<input name={name} type='text' onChange={this.onChange} value={value}/>
+				<input name={name} type='text' onChange={this.onChange} value={value} />
 			</div>
 		)
 	}

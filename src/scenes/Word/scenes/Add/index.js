@@ -53,8 +53,7 @@ class Add extends React.Component {
 	}
 
 	render() {
-		const {isSubmitted} = this.state;
-		const {definition} = this.state;
+		const {isSubmitted, definition} = this.state;
 
 		if (isSubmitted) {
 			return <Redirect push to='/' />;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import WordsApi from '../../services/WordsApi';
+import WordsApi from '../../services/api/WordsApi';
 
 class DeleteButton extends React.Component {
 	constructor(props) {
