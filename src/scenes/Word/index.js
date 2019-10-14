@@ -14,7 +14,9 @@ class Word extends React.Component {
 			error: false,
 			hasBeenEdited: false,
 			isSubmitted: false,
-			form: null
+			form: {
+				definition: []
+			}
 		}
 
 		this.getUpdatedDefinitions = this.getUpdatedDefinitions.bind(this);
@@ -38,22 +40,22 @@ class Word extends React.Component {
 		}
 	}
 
-	getUpdatedDefinitions(definition) {
-		const {word} = this.state;
-
+	getUpdatedDefinitions(newDefinition) {
+		const {definition} = this.state.word;
+		newDefinition = newDefinition.filter(def => def !== '');
 		this.setState({
 			form: {
-				name: word.name,
-				id: word.id,
-				definition: definition
+				definition: newDefinition
 			}
 		})
+		
+		const hasBeenEdited = !newDefinition.every(def => definition.includes(def));
 
-		if (definition !== this.state.word.definition) {
-			this.setState({
-				hasBeenEdited: true
-			})
-		}
+		this.setState({
+			hasBeenEdited: hasBeenEdited
+		})
+
+
 	}
 
 	async handleSubmit(e) {
@@ -75,7 +77,7 @@ class Word extends React.Component {
 	}
 
 	render() {
-		const {word, isLoaded, error, hasBeenEdited, isSubmitted} = this.state;
+		const {word, isLoaded, error, hasBeenEdited } = this.state;
 		let content;
 
 		if (error) {
