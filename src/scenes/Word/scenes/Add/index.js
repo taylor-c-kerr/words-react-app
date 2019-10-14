@@ -1,9 +1,11 @@
 import React from 'react';
 import Input from '../../../../components/Input/index';
+import Definition from '../../components/Definition/index';
 import Button from '../../../../components/Button/index';
 import WordsApi from '../../../../services/api/WordsApi/index';
 import {Redirect} from 'react-router-dom'
 import Validate from '../../../../services/validation/index'
+
 class Add extends React.Component {
 	constructor(props) {
 		super(props);
@@ -17,19 +19,18 @@ class Add extends React.Component {
 
 		this.getInputValue = this.getInputValue.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
-		this.addDefinition = this.addDefinition.bind(this);
+		this.getUpdatedDefinitions = this.getUpdatedDefinitions.bind(this);
 	}
 
-	getInputValue(value, index=null) {
-		if ('definition' in value) {
-			let {definition} = this.state;
-			definition[index] = value.definition;
-			this.setState({definition: definition})
-		}
-		else {
-			this.setState(value);
-		}
+	getUpdatedDefinitions(newDefinition) {
+		newDefinition = newDefinition.filter(def => def !== '');
+		this.setState({
+			definition: newDefinition
+		})
+	}
 
+	getInputValue(value) {
+		this.setState(value);
 	}
 
 	async handleSubmit(e) {
@@ -44,14 +45,6 @@ class Add extends React.Component {
 		}
 	}
 
-	addDefinition() {
-		const {definition} = this.state
-
-		this.setState({
-			definition: [...definition, '']
-		})
-	}
-
 	render() {
 		const {isSubmitted, definition} = this.state;
 
@@ -62,8 +55,7 @@ class Add extends React.Component {
 		return (
 			<div>
 				<Input name='name' updateValue={this.getInputValue}/>
-				{definition.map((def,i) => <Input name='definition' updateValue={this.getInputValue} defaultValue={def} index={i} key={`def-input-${i}`}/>)}
-				<Button onClick={this.addDefinition} value='add definition' />
+				<Definition definition={definition} sendDefinitions={this.getUpdatedDefinitions}/>
 				<Button onClick={this.handleSubmit} value='save' />
 			</div>
 		)
