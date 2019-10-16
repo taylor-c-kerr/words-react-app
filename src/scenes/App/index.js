@@ -9,20 +9,16 @@ import './styles.css';
 
 class App extends React.Component{
 	render() {
-		const router = <Router>
-			<div>
-				<Route exact path="/" component={Home} />
-				<Route path="/word/:id" component={Word}/>
-				<Route path="/add" component={AddWord}/>
-			</div>
-		</Router>;
-
 		return (
-			<div className="App">
-				<Header />
-				{router}
-				<Footer />
-			</div>
+			<Router>
+				<div className="App">
+					<Header />
+					<Route exact path="/" component={Home} />
+					<Route path="/word/:id" component={Word}/>
+					<Route path="/add" component={AddWord}/>
+					<Footer />
+				</div>
+			</Router>
 		)
 	}
 }
