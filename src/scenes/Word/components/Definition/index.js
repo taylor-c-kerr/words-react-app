@@ -28,7 +28,7 @@ class Definition extends React.Component {
 		let {definition} = this.state;
 		let newDef = definition;
 		newDef.push('')
-		this.props.onDataUpdate(newDef);
+		this.setState({definition: newDef})
 	}
 
 	deleteDefinition(value, index) {
