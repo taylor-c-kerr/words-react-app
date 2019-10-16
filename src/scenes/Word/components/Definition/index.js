@@ -6,62 +6,78 @@ class Definition extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			definition: []
-		};
-		this.getValue = this.getValue.bind(this);
+			definition: ['']
+		}
 		this.addDefinition = this.addDefinition.bind(this);
-		// this.deleteDefinition = this.deleteDefinition.bind(this, value, index);
+	}
+	
+	onDataUpdate(e) {
+		const {id, value} = e.target;
+		let newDef;
+		this.setState(prevState => {
+			let {definition} = prevState;
+
+			newDef = definition.map((def, i) => i === parseInt(id) ? value : def)
+
+			this.props.onDataUpdate(newDef)
+			return {definition: newDef};
+		})
+	}
+
+	addDefinition() {
+		let {definition} = this.state;
+		let newDef = definition;
+		newDef.push('')
+		this.setState({definition: newDef})
+	}
+
+	deleteDefinition(value, index) {
+		let {definition} = this.props;
+		definition = definition.filter(def => def !== value);
+		this.props.onDataUpdate(definition);
 	}
 
 	componentDidMount() {
 		const {definition} = this.props;
+
 		this.setState({
 			definition: definition
 		})
 	}
-	
-	getValue(value, index) {
-		let {definition} = this.state;
-		definition[index] = value.definition;
-		this.setState({
-			definition: definition
-		})
-		this.props.sendDefinitions(definition);
-	}
 
-	addDefinition() {
-		const {definition} = this.state;
-		this.setState({
-			definition: [...definition, '']
+	displayDefinitionv1(definition) {
+		definition.map((def, i) => {
+			return <div>
+				<Input 
+					name='definition' 
+					onUpdate={this.onUpdate} // getting the <input> value from the child component
+					value={def} 
+					index={i} 
+					key={`def-input-${i}`}
+					canBeDeleted={true}
+					onDeleteClick={this.deleteDefinition.bind(this, def, i)}
+				/>
+			</div>	
 		})
-		this.props.sendDefinitions(definition);
-	}
-
-	deleteDefinition(value, index) {
-		let {definition} = this.state;
-		definition = definition.filter(def => def !== value);
-		this.setState({definition: definition});
-		this.props.sendDefinitions(definition);
 	}
 
 	render() {
 		const {definition} = this.state;
-
 		return (
 			<div>
 				{
 					definition.map((def, i) => {
-						return <div>
-							<Input 
-								name='definition' 
-								updateValue={this.getValue} // getting the <input> value from the child component
-								value={def} 
-								index={i} 
-								key={`def-input-${i}`}
-								canBeDeleted={true}
-								onDeleteClick={this.deleteDefinition.bind(this, def, i)}
+						return <div key={`${i}`}>
+							<input 
+								onChange={this.onDataUpdate.bind(this)} 
+								type='text' 
+								value={def}
+								id={i}
+								// canBeDeleted={true} 
+								// key={`input-def-${i}`}
 							/>
-						</div>	
+							<br/>
+						</div>
 					})
 				}
 				<Button onClick={this.addDefinition} value='add definition' />

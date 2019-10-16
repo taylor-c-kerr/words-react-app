@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 import WordsApi from '../../services/api/WordsApi/index';
 import Name from './components/Name/index';
 import Definition from './components/Definition/index';
@@ -10,63 +11,55 @@ class Word extends React.Component {
 		super(props);
 		this.state = {
 			isLoaded: false,
-			word: null,
 			error: false,
-			hasBeenEdited: false,
-			isSubmitted: false,
-			form: {
-				definition: []
-			}
+			hasBeenEdited: false
 		}
 
-		this.getUpdatedDefinitions = this.getUpdatedDefinitions.bind(this);
+		this.onDataUpdate = this.onDataUpdate.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
-	async componentDidMount() {
+	componentDidMount() {
+		this.getWord()
+	}
+
+	async getWord() {
 		const {id} = this.props.match.params;
+
 		try {
 			const word = await WordsApi.getWord(id);
+			this._originalWord = word.data
 			this.setState({
 				isLoaded: true,
-				word: word.data
+				word: word.data,
 			})
+			return word;
 		}
 		catch (error) {
-			console.log(error.request);
+			console.log(error);
 			this.setState({
 				error: true
 			})
 		}
 	}
 
-	getUpdatedDefinitions(newDefinition) {
-		const {definition} = this.state.word;
-		newDefinition = newDefinition.filter(def => def !== '');
-		this.setState({
-			form: {
-				definition: newDefinition
-			}
+	onDataUpdate(data) {
+		this.setState(prevState => {
+			let updatedWord = Object.assign({}, prevState.word);
+			updatedWord.definition = data.filter(d => d !== '');
+
+			return {
+				word: updatedWord,
+				hasBeenEdited: !_.isEqual(this._originalWord, updatedWord)
+			};
 		})
-
-		const haveSameDefinitions = newDefinition.every(def => definition.includes(def));
-		const haveSameLength = newDefinition.length === definition.length;		
-		const isTheSame = haveSameDefinitions && haveSameLength;
-
-		this.setState({
-			hasBeenEdited: !isTheSame
-		})
-
-
 	}
 
 	async handleSubmit(e) {
-		let {form} = this.state;
-		const {name, id} = this.state.word;
-		form = {...form, name, id}
+		let {word} = this.state;
 
 		try {
-			const data = Validate.form(form);
+			const data = Validate.form(word);
 			await WordsApi.updateWord(data)
 			this.setState({
 				isSubmitted: true,
@@ -77,12 +70,10 @@ class Word extends React.Component {
 			console.log(error);
 			alert(error);
 		}
-
-
 	}
 
 	render() {
-		const {word, isLoaded, error, hasBeenEdited } = this.state;
+		const {isLoaded, error, hasBeenEdited} = this.state;
 		let content;
 
 		if (error) {
@@ -92,10 +83,11 @@ class Word extends React.Component {
 			content = <div>LOADING...</div> ;
 		}
 		else {
+			const {word}  = this.state;
 			content = 
 			<div>
 				<Name name={word.name} />
-				<Definition definition={word.definition} sendDefinitions={this.getUpdatedDefinitions}/>
+				<Definition definition={word.definition} onDataUpdate={this.onDataUpdate}/>
 			</div>;
 		}
 

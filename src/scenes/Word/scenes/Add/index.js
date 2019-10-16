@@ -19,13 +19,13 @@ class Add extends React.Component {
 
 		this.getInputValue = this.getInputValue.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
-		this.getUpdatedDefinitions = this.getUpdatedDefinitions.bind(this);
+		this.onDataUpdate = this.onDataUpdate.bind(this);
 	}
 
-	getUpdatedDefinitions(newDefinition) {
-		newDefinition = newDefinition.filter(def => def !== '');
+	onDataUpdate(data) {
+		data = data.filter(def => def !== '');
 		this.setState({
-			definition: newDefinition
+			definition: data
 		})
 	}
 
@@ -55,7 +55,7 @@ class Add extends React.Component {
 		return (
 			<div>
 				<Input name='name' updateValue={this.getInputValue}/>
-				<Definition definition={definition} sendDefinitions={this.getUpdatedDefinitions}/>
+				<Definition definition={definition} onDataUpdate={this.onDataUpdate}/>
 				<Button onClick={this.handleSubmit} value='save' />
 			</div>
 		)
