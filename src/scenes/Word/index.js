@@ -32,7 +32,6 @@ class Word extends React.Component {
 			this.setState({
 				isLoaded: true,
 				word: word.data,
-				// form: word.data
 			})
 			return word;
 		}
@@ -54,8 +53,6 @@ class Word extends React.Component {
 				hasBeenEdited: !_.isEqual(this._originalWord, updatedWord)
 			};
 		})
-
-
 	}
 
 	async handleSubmit(e) {
@@ -73,12 +70,9 @@ class Word extends React.Component {
 			console.log(error);
 			alert(error);
 		}
-
-
 	}
 
 	render() {
-		console.log(this._originalWord);
 		const {isLoaded, error, hasBeenEdited} = this.state;
 		let content;
 

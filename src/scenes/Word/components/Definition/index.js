@@ -11,7 +11,7 @@ class Definition extends React.Component {
 		this.addDefinition = this.addDefinition.bind(this);
 	}
 	
-	onUpdate(e) {
+	onDataUpdate(e) {
 		const {id, value} = e.target;
 		let newDef;
 		this.setState(prevState => {
@@ -69,7 +69,7 @@ class Definition extends React.Component {
 					definition.map((def, i) => {
 						return <div key={`${i}`}>
 							<input 
-								onChange={this.onUpdate.bind(this)} 
+								onChange={this.onDataUpdate.bind(this)} 
 								type='text' 
 								value={def}
 								id={i}
