@@ -1,5 +1,4 @@
 import React from 'react';
-import './styles.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Btn from 'react-bootstrap/Button';
 
@@ -23,7 +22,6 @@ class Button extends React.Component {
 	render() {
 		const {value, variant} = this.props;
 		return (
-			// <button onClick={this.handleClick} type='button'>{this.props.value}</button>
 			<Btn 
 				onClick={this.handleClick}
 				variant={[variant || 'primary']}
