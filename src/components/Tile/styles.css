@@ -4,7 +4,12 @@
 	border-radius: 30px;
 	padding: 10px;
 	margin: 10px;
-	background: gray;
+	background: #f0f1f2;
+
+}
+
+.tile:hover {
+	background: #a9bacb
 }
 
 .deletedTile {
