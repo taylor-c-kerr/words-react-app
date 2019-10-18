@@ -22,12 +22,7 @@ class Button extends React.Component {
 	render() {
 		const {value, variant} = this.props;
 		return (
-			<Btn 
-				onClick={this.handleClick}
-				variant={[variant || 'primary']}
-			 >
-			{value}
-			</Btn>
+			<Btn onClick={this.handleClick} variant={[variant || 'primary']}>{value}</Btn>
 		)
 	}
 

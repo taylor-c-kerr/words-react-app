@@ -56,7 +56,7 @@ class Add extends React.Component {
 			<div>
 				<Input name='name' updateValue={this.getInputValue}/>
 				<Definition definition={definition} onDataUpdate={this.onDataUpdate}/>
-				<Button onClick={this.handleSubmit} value='save' />
+				<div onClick={this.handleSubmit}><Button variant='success' value='save' /></div>
 			</div>
 		)
 	}

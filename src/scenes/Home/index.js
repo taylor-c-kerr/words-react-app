@@ -70,7 +70,7 @@ class Home extends React.Component {
 
     return (
       <div>
-        <Button variant='primary' onClick={this.sendToAddPage} value='Add a new word' />
+        <div onClick={this.sendToAddPage}><Button variant='primary' value='Add a new word' /></div>
         <Container >
           {formattedWords.map((word, i) => <Row key={`row-${i}`}>{word}</Row>)}
           </Container>
