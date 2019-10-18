@@ -1,9 +1,10 @@
 import React from 'react';
+import {Redirect} from 'react-router-dom';
 import _ from 'lodash';
 import WordsApi from '../../services/api/WordsApi/index';
 import Name from './components/Name/index';
 import Definition from './components/Definition/index';
-import CloseButton from '../../components/CloseButton/index.js';
+import Button from '../../components/Button/index.js';
 import Validate from '../../services/validation/index'
 
 class Word extends React.Component {
@@ -17,6 +18,7 @@ class Word extends React.Component {
 
 		this.onDataUpdate = this.onDataUpdate.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
+		this.handleClose = this.handleClose.bind(this);
 	}
 
 	componentDidMount() {
@@ -72,9 +74,17 @@ class Word extends React.Component {
 		}
 	}
 
+	handleClose() {
+		this.setState({isClosed: true})
+	}
+
 	render() {
-		const {isLoaded, error, hasBeenEdited} = this.state;
+		const {isLoaded, isClosed, error, hasBeenEdited} = this.state;
 		let content;
+
+		if (isClosed) {
+			return <Redirect push to='/' />
+		}
 
 		if (error) {
 			content = <div>THERE WAS AN ERROR</div>;
@@ -94,7 +104,7 @@ class Word extends React.Component {
 		return <div>
 			{content}
 			{hasBeenEdited ? <button onClick={this.handleSubmit}>SAVE</button> : null}
-			<CloseButton />
+			<div onClick={this.handleClose}><Button variant='danger' value='Close' /></div>
 		</div>
 	}
 }

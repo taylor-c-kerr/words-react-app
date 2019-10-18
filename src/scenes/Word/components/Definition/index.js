@@ -80,7 +80,7 @@ class Definition extends React.Component {
 						</div>
 					})
 				}
-				<Button onClick={this.addDefinition} value='add definition' />
+				<Button variant='primary' onClick={this.addDefinition} value='add definition' />
 			</div>
 		)
 	}

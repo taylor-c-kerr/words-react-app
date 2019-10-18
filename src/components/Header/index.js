@@ -34,7 +34,7 @@ class Header extends React.Component {
 		return (
 			<div onClick={this.redirect}>
 				<header>
-					<img src={moose} alt='Thoughtful Moose'/>
+					<img className='image' src={moose} alt='Thoughtful Moose'/>
 					<h1>Thoughtful Moose</h1>
 				</header>
 			</div>
