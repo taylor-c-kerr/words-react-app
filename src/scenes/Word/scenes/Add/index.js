@@ -10,11 +10,13 @@ class Add extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			id: '',
-			name: '',
-			definition: [''],
-			isSubmitted: false,
-			inputValue: ''
+			word: {
+				id: '',
+				name: '',
+				definition: [{partOfSpeech: 'partOfSpeech', entries: ['definition']}],
+				isSubmitted: false,
+				inputValue: ''
+			}
 		}
 
 		this.getInputValue = this.getInputValue.bind(this);
@@ -46,7 +48,7 @@ class Add extends React.Component {
 	}
 
 	render() {
-		const {isSubmitted, definition} = this.state;
+		const {isSubmitted, word} = this.state;
 
 		if (isSubmitted) {
 			return <Redirect push to='/' />;
@@ -55,7 +57,11 @@ class Add extends React.Component {
 		return (
 			<div>
 				<Input name='name' updateValue={this.getInputValue}/>
-				<Definition definition={definition} onDataUpdate={this.onDataUpdate}/>
+				{/*<Definition definition={definition} onDataUpdate={this.onDataUpdate}/>*/}
+				{word.definition.map((d, i) => {
+					return <Definition key={`definition-${i}`} definition={d} onDataUpdate={this.onDataUpdate} number={i}/>		
+				})}
+
 				<div onClick={this.handleSubmit}><Button variant='success' value='save' /></div>
 			</div>
 		)

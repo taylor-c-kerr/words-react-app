@@ -43,7 +43,7 @@ class Home extends React.Component {
 
   createTable(data) {
     if (data[0] ==='') {
-      return null
+      return null;
     }
     const newData = data.map((d, i) => {
       return <Col key={`tile-${i}`}>

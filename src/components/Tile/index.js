@@ -30,7 +30,6 @@ class Tile extends React.Component {
 	}
 
 	async handleDelete() {
-		console.log('delete');
 		const {id} = this.props;
 		const toDelete = await window.confirm(`delete ${id}?`);
 		if (toDelete) {

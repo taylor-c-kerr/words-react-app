@@ -20,9 +20,9 @@ class Button extends React.Component {
 	}
 
 	render() {
-		const {value, variant} = this.props;
+		const {value, variant, onClick} = this.props;
 		return (
-			<Btn onClick={this.handleClick} variant={[variant || 'primary']}>{value}</Btn>
+			<Btn onClick={onClick} variant={[variant || 'primary']}>{value}</Btn>
 		)
 	}
 

@@ -22,12 +22,21 @@ class Word extends React.Component {
 	}
 
 	componentDidMount() {
-		this.getWord()
+		const emptyWord = {name: 'New Name', category: ['new category'], definition: [{partOfSpeech: 'newPartOfSpeech', entries: ['newEntry']}]}
+		const {id} = this.props.match.params;
+		console.log(id);
+		if (id === 'add') {
+			this.setState({
+				isLoaded: true,
+				word: emptyWord
+			})
+		}
+		else {
+			this.getWord(id)
+		}
 	}
 
-	async getWord() {
-		const {id} = this.props.match.params;
-
+	async getWord(id) {
 		try {
 			const word = await WordsApi.getWord(id);
 			this._originalWord = word.data
@@ -45,15 +54,50 @@ class Word extends React.Component {
 		}
 	}
 
+	hasBeenEdited(previous, current) {
+		let copy = Object.assign({}, current);
+		copy.definition = [];
+
+		// having to do this to make a unique copy and not modify the original
+		for (let i = 0; i < current.definition.length; i++) {
+			let def = current.definition[i];
+			let newDef = {entries: null, partOfSpeech: null};
+			// looping through each definition element/object and adding it to newDef
+			for (let x in def) {
+				if (x=== 'entries') {
+					newDef.entries = def[x].filter(e => e !== '')
+				}
+				else {
+					newDef.partOfSpeech = def[x]
+				}
+			}
+			copy.definition.push(newDef)
+		}
+
+		return !_.isEqual(previous, copy)
+
+	}
+
 	onDataUpdate(data) {
 		this.setState(prevState => {
-			let updatedWord = Object.assign({}, prevState.word);
-			updatedWord.definition = data.filter(d => d !== '');
+			let updatedWord = Object.assign({}, prevState.word)
+			let newDefinition = [...updatedWord.definition];  // array of definition objects {partOfSpeech, entries}
+
+			newDefinition = newDefinition.map(def => {
+				if (def.partOfSpeech === data.partOfSpeech) {
+					def = data;
+				}
+				return def;
+			})
+
+			updatedWord.definition = newDefinition;
+
+			const hasBeenEdited = this.hasBeenEdited(this._originalWord, updatedWord)
 
 			return {
 				word: updatedWord,
-				hasBeenEdited: !_.isEqual(this._originalWord, updatedWord)
-			};
+				hasBeenEdited: hasBeenEdited
+			}
 		})
 	}
 
@@ -94,10 +138,14 @@ class Word extends React.Component {
 		}
 		else {
 			const {word}  = this.state;
+
 			content = 
 			<div>
 				<Name name={word.name} />
-				<Definition definition={word.definition} onDataUpdate={this.onDataUpdate}/>
+				{word.definition.map((d, i) => {
+					return <Definition key={`definition-${i}`} definition={d} onDataUpdate={this.onDataUpdate} number={i}/>		
+				})}
+				
 			</div>;
 		}
 
