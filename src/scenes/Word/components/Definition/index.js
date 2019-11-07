@@ -1,86 +1,51 @@
 import React from 'react';
-import Input from '../../../../components/Input/index';
 import Button from '../../../../components/Button/index';
 
 class Definition extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			definition: ['']
+	onDataUpdate(i, e) {
+		const {value, type} = e.target;
+		let {definition, number} = this.props;
+		definition = Object.assign({}, definition);
+		let entries = [...definition.entries];
+
+		if (type === 'button' && value === '') {
+			// we have clicked the add definition button
+			entries.push(value);
 		}
-		this.addDefinition = this.addDefinition.bind(this);
-	}
-	
-	onDataUpdate(e) {
-		const {id, value} = e.target;
-		let newDef;
-		this.setState(prevState => {
-			let {definition} = prevState;
+		else {
+			entries[i] = value;
+		}
 
-			newDef = definition.map((def, i) => i === parseInt(id) ? value : def)
+		definition.entries = entries;
+		this.props.onDataUpdate(definition, number);
 
-			this.props.onDataUpdate(newDef)
-			return {definition: newDef};
-		})
-	}
-
-	addDefinition() {
-		let {definition} = this.state;
-		let newDef = definition;
-		newDef.push('')
-		this.setState({definition: newDef})
-	}
-
-	deleteDefinition(value, index) {
-		let {definition} = this.props;
-		definition = definition.filter(def => def !== value);
-		this.props.onDataUpdate(definition);
-	}
-
-	componentDidMount() {
-		const {definition} = this.props;
-
-		this.setState({
-			definition: definition
-		})
-	}
-
-	displayDefinitionv1(definition) {
-		definition.map((def, i) => {
-			return <div>
-				<Input 
-					name='definition' 
-					onUpdate={this.onUpdate} // getting the <input> value from the child component
-					value={def} 
-					index={i} 
-					key={`def-input-${i}`}
-					canBeDeleted={true}
-					onDeleteClick={this.deleteDefinition.bind(this, def, i)}
-				/>
-			</div>	
-		})
 	}
 
 	render() {
-		const {definition} = this.state;
+		if (!this.props.definition) {
+			return <div>LOADING...</div>
+		}
+
+		const {definition} = this.props;
+		const {partOfSpeech, entries} = definition
+
 		return (
 			<div>
+				<div>{partOfSpeech}</div>
 				{
-					definition.map((def, i) => {
-						return <div key={`${i}`}>
+					entries.map((def, i) => {
+						return <div key={`entry-${i}`}>
+							{`${i+1}. `}
 							<input 
-								onChange={this.onDataUpdate.bind(this)} 
+								onChange={this.onDataUpdate.bind(this, i)} 
 								type='text' 
 								value={def}
-								id={i}
-								// canBeDeleted={true} 
-								// key={`input-def-${i}`}
 							/>
 							<br/>
 						</div>
 					})
 				}
-				<div onClick={this.addDefinition}><Button variant='primary' value='add definition' /></div>
+				<Button onClick={ this.onDataUpdate.bind(this, -1) } variant='primary' value='add definition' />
 			</div>
 		)
 	}
