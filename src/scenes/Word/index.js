@@ -2,8 +2,8 @@ import React from 'react';
 import {Redirect} from 'react-router-dom';
 import _ from 'lodash';
 import WordsApi from '../../services/api/WordsApi/index';
-import Name from './components/Name/index';
-import Definition from './components/Definition/index';
+import Name from '../../components/Name/index';
+import Definition from '../../components/Definition/index';
 import Button from '../../components/Button/index.js';
 import Validate from '../../services/validation/index'
 
@@ -22,10 +22,10 @@ class Word extends React.Component {
 	}
 
 	componentDidMount() {
-		const emptyWord = {name: 'New Name', category: ['new category'], definition: [{partOfSpeech: 'newPartOfSpeech', entries: ['newEntry']}]}
+		const emptyWord = {name: '', category: [], definition: [{partOfSpeech: '', entries: ['']}]}
 		const {id} = this.props.match.params;
 		console.log(id);
-		if (id === 'add') {
+		if (id === 'add' || id === undefined) {
 			this.setState({
 				isLoaded: true,
 				word: emptyWord
@@ -129,8 +129,7 @@ class Word extends React.Component {
 		if (isClosed) {
 			return <Redirect push to='/' />
 		}
-
-		if (error) {
+		else if (error) {
 			content = <div>THERE WAS AN ERROR</div>;
 		}
 		else if (!isLoaded) {
@@ -138,11 +137,13 @@ class Word extends React.Component {
 		}
 		else {
 			const {word}  = this.state;
+			const {name, definition} = word;
 
 			content = 
 			<div>
-				<Name name={word.name} />
-				{word.definition.map((d, i) => {
+				<Name value={name} />
+
+ 				{definition.map((d, i) => {
 					return <Definition key={`definition-${i}`} definition={d} onDataUpdate={this.onDataUpdate} number={i}/>		
 				})}
 				

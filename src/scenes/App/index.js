@@ -14,8 +14,7 @@ class App extends React.Component{
 				<div className="App">
 					<Header />
 					<Route exact path="/" component={Home} />
-					<Route path="/word/:id" component={Word}/>
-					<Route path="/add" component={AddWord}/>
+					<Route path="/:id" component={Word}/>
 					<Footer />
 				</div>
 			</Router>
