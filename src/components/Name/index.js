@@ -1,4 +1,5 @@
 import React from 'react';
+import Input from '../Input/index';
 
 class Name extends React.Component {
 	constructor(props) {
@@ -7,7 +8,9 @@ class Name extends React.Component {
 	}
 
 	render() {
-		return <h2>{this.props.name}</h2>;
+		const {value} = this.props;
+		let c = value ? <h2>{value}</h2> : <Input type='name' value={value} />
+		return c;
 	}
 }
 

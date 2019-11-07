@@ -1,5 +1,6 @@
 import React from 'react';
-import Button from '../../../../components/Button/index';
+import Button from '../Button/index';
+import PartOfSpeech from '../../components/PartOfSpeech/index';
 
 class Definition extends React.Component {
 	onDataUpdate(i, e) {
@@ -31,7 +32,7 @@ class Definition extends React.Component {
 
 		return (
 			<div>
-				<div>{partOfSpeech}</div>
+				<PartOfSpeech value={partOfSpeech} />
 				{
 					entries.map((def, i) => {
 						return <div key={`entry-${i}`}>
@@ -40,6 +41,7 @@ class Definition extends React.Component {
 								onChange={this.onDataUpdate.bind(this, i)} 
 								type='text' 
 								value={def}
+								placeholder='enter a new definition'
 							/>
 							<br/>
 						</div>
