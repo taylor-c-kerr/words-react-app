@@ -4,7 +4,6 @@ import Footer from '../../components/Footer/index';
 import Header from '../../components/Header/index';
 import Home from '../Home/index';
 import Word from '../Word/index';
-import AddWord from '../Word/scenes/Add/index';
 import './styles.css';
 
 class App extends React.Component{

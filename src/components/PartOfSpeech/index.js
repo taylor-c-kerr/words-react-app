@@ -9,7 +9,7 @@ class Name extends React.Component {
 
 	render() {
 		const {value} = this.props;
-		let c = value ? <h3>{value}</h3> : <Input type='part of speech' value={value} />
+		let c = value ? <h3>{value}</h3> : <Input type='partOfSpeech' placeholder='part of speech' value={value} onDataUpdate={(data) => this.props.onDataUpdate(data)}/>
 		return c;
 	}
 }

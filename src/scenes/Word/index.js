@@ -40,6 +40,7 @@ class Word extends React.Component {
 				isLoaded: true,
 				word: word
 			})
+			this._originalWord = word;
 		}
 		else {
 			this.getWord(id)
@@ -49,7 +50,7 @@ class Word extends React.Component {
 	async getWord(id) {
 		try {
 			const word = await WordsApi.getWord(id);
-			this._originalWord = word.data
+			this._originalWord = word.data;
 			this.setState({
 				isLoaded: true,
 				word: word.data,
@@ -88,26 +89,35 @@ class Word extends React.Component {
 	}
 
 	onDataUpdate(data) {
-		this.setState(prevState => {
-			let updatedWord = Object.assign({}, prevState.word)
-			let newDefinition = [...updatedWord.definition];  // array of definition objects {partOfSpeech, entries}
+		if (data.name) {
+			this.setState({name: data.name})
+		}
+		else {
+			this.setState(prevState => {
+				let updatedWord = Object.assign({}, prevState.word)
+				let newDefinition = [...updatedWord.definition];  // array of definition objects {partOfSpeech, entries}
 
-			newDefinition = newDefinition.map(def => {
-				if (def.partOfSpeech === data.partOfSpeech) {
-					def = data;
+				newDefinition = newDefinition.map(def => {
+					// console.log(def);
+					if (def.partOfSpeech === data.partOfSpeech) {
+						def = data;
+					}
+					else {
+						def.partOfSpeech = data.partOfSpeech
+					}
+					return def;
+				})
+
+				updatedWord.definition = newDefinition;
+
+				const hasBeenEdited = this.hasBeenEdited(this._originalWord, updatedWord)
+
+				return {
+					word: updatedWord,
+					hasBeenEdited: hasBeenEdited
 				}
-				return def;
 			})
-
-			updatedWord.definition = newDefinition;
-
-			const hasBeenEdited = this.hasBeenEdited(this._originalWord, updatedWord)
-
-			return {
-				word: updatedWord,
-				hasBeenEdited: hasBeenEdited
-			}
-		})
+		}
 	}
 
 	async handleSubmit(e) {
@@ -145,6 +155,7 @@ class Word extends React.Component {
 			}
 		})
 	}
+
 	render() {
 		const {isLoaded, isClosed, error, hasBeenEdited} = this.state;
 		let content;
@@ -164,7 +175,7 @@ class Word extends React.Component {
 
 			content = 
 			<div>
-				<Name value={name} />
+				<Name value={name} onDataUpdate={this.onDataUpdate}/>
 
  				{definition.map((d, i) => {
 					return <Definition key={`definition-${i}`} definition={d} onDataUpdate={this.onDataUpdate} number={i}/>		
