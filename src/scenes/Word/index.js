@@ -5,7 +5,7 @@ import WordsApi from '../../services/api/WordsApi/index';
 import Name from '../../components/Name/index';
 import Definition from '../../components/Definition/index';
 import Button from '../../components/Button/index.js';
-import Validate from '../../services/validation/index'
+import Validate from '../../services/validation/index';
 
 class Word extends React.Component {
 	constructor(props) {
@@ -13,22 +13,32 @@ class Word extends React.Component {
 		this.state = {
 			isLoaded: false,
 			error: false,
-			hasBeenEdited: false
+			hasBeenEdited: false,
+			word: {
+				name: '', 
+				category: [], 
+				definition: [
+					{
+						partOfSpeech: '', 
+						entries: ['']
+					}
+				]
+			}
 		}
 
 		this.onDataUpdate = this.onDataUpdate.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
+		this.handleAdd = this.handleAdd.bind(this);
 		this.handleClose = this.handleClose.bind(this);
 	}
 
 	componentDidMount() {
-		const emptyWord = {name: '', category: [], definition: [{partOfSpeech: '', entries: ['']}]}
+		const {word} = this.state
 		const {id} = this.props.match.params;
-		console.log(id);
 		if (id === 'add' || id === undefined) {
 			this.setState({
 				isLoaded: true,
-				word: emptyWord
+				word: word
 			})
 		}
 		else {
@@ -75,7 +85,6 @@ class Word extends React.Component {
 		}
 
 		return !_.isEqual(previous, copy)
-
 	}
 
 	onDataUpdate(data) {
@@ -122,6 +131,20 @@ class Word extends React.Component {
 		this.setState({isClosed: true})
 	}
 
+	handleAdd() {
+		this.setState(prevState => {
+			const {word} = prevState;
+			console.log(word);
+			const {definition} = word;
+			const blankDefinition = {partOfSpeech: '', entries: ['']};
+
+			definition.push(blankDefinition);
+
+			return {
+				definition: definition
+			}
+		})
+	}
 	render() {
 		const {isLoaded, isClosed, error, hasBeenEdited} = this.state;
 		let content;
@@ -152,7 +175,11 @@ class Word extends React.Component {
 
 		return <div>
 			{content}
+
+			<div onClick={this.handleAdd}><Button variant='primary' value='Add Part of Speech' /></div>
+
 			{hasBeenEdited ? <button onClick={this.handleSubmit}>SAVE</button> : null}
+
 			<div onClick={this.handleClose}><Button variant='danger' value='Close' /></div>
 		</div>
 	}
