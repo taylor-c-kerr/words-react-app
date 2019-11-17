@@ -16,7 +16,7 @@ class Word extends React.Component {
 			hasBeenEdited: false,
 			word: {
 				name: '', 
-				category: [], 
+				category: [''], 
 				definition: [
 					{
 						partOfSpeech: '', 
@@ -38,7 +38,8 @@ class Word extends React.Component {
 		if (id === 'add' || id === undefined) {
 			this.setState({
 				isLoaded: true,
-				word: word
+				word: word,
+				newWord: true
 			})
 			this._originalWord = word;
 		}
@@ -88,44 +89,41 @@ class Word extends React.Component {
 		return !_.isEqual(previous, copy)
 	}
 
-	onDataUpdate(data) {
-		if (data.name) {
-			this.setState({name: data.name})
-		}
-		else {
-			this.setState(prevState => {
-				let updatedWord = Object.assign({}, prevState.word)
-				let newDefinition = [...updatedWord.definition];  // array of definition objects {partOfSpeech, entries}
+	onDataUpdate(data, number=null) {
+		this.setState(prevState => {
+			let updatedWord = Object.assign({}, prevState.word);
 
-				newDefinition = newDefinition.map(def => {
-					// console.log(def);
-					if (def.partOfSpeech === data.partOfSpeech) {
-						def = data;
-					}
-					else {
-						def.partOfSpeech = data.partOfSpeech
-					}
-					return def;
-				})
+			if (data.hasOwnProperty('name')) {
+				updatedWord.name = data.name;
+			}
+			else {
+				let definitionClone = [...updatedWord.definition];  // array of definition objects: {partOfSpeech, entries}
+				definitionClone[number] = data;
+				updatedWord.definition = definitionClone;
+			}
 
-				updatedWord.definition = newDefinition;
+			const hasBeenEdited = this.hasBeenEdited(this._originalWord, updatedWord);
 
-				const hasBeenEdited = this.hasBeenEdited(this._originalWord, updatedWord)
-
-				return {
-					word: updatedWord,
-					hasBeenEdited: hasBeenEdited
-				}
-			})
-		}
+			return {
+				word: updatedWord,
+				hasBeenEdited: hasBeenEdited
+			}
+		})
 	}
 
 	async handleSubmit(e) {
-		let {word} = this.state;
+		console.log(this._originalWord);
+		let {word, newWord} = this.state;
 
 		try {
 			const data = Validate.form(word);
-			await WordsApi.updateWord(data)
+			if (newWord) {
+				await WordsApi.postWord(data)
+			}
+			else {
+				await WordsApi.updateWord(data)
+			}
+
 			this.setState({
 				isSubmitted: true,
 				hasBeenEdited: false
@@ -144,7 +142,6 @@ class Word extends React.Component {
 	handleAdd() {
 		this.setState(prevState => {
 			const {word} = prevState;
-			console.log(word);
 			const {definition} = word;
 			const blankDefinition = {partOfSpeech: '', entries: ['']};
 

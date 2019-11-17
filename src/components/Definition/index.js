@@ -4,7 +4,6 @@ import PartOfSpeech from '../../components/PartOfSpeech/index';
 
 class Definition extends React.Component {
 	onDataUpdate(data, e) {
-		console.log(data);
 		let {definition, number} = this.props;
 		definition = Object.assign({}, definition);
 
@@ -15,7 +14,7 @@ class Definition extends React.Component {
 			entries[data] = value;
 			definition.entries = entries;
 		}
-		else if (data.partOfSpeech) {
+		else if (data.hasOwnProperty('partOfSpeech')) {
 			// add part of speech
 			const {partOfSpeech} = data;
 			definition.partOfSpeech = partOfSpeech
@@ -23,12 +22,12 @@ class Definition extends React.Component {
 		else {
 			// add blank entry
 			let entries = [...definition.entries];
-			console.log(entries);
 			entries.push('');
-			console.log(entries);
 			definition.entries = entries;
-			console.log(definition);
 		}
+
+		// definition.number = number;
+
 		this.props.onDataUpdate(definition, number);
 	}
 
