@@ -3,16 +3,16 @@ import React from 'react';
 class Input extends React.Component {
 	constructor(props) {
 		super(props);
-		this.onUpdate = this.onUpdate.bind(this);
+		this.onDataUpdate = this.onDataUpdate.bind(this);
 		this.handleClick = this.handleClick.bind(this);
 	}
 
-	onUpdate(e) {
-		const {index} = this.props;
-		const {name, value} = e.target;
-		let data = {[name]: value};
+	onDataUpdate(e) {
+		const {type} = this.props;
+		const {value} = e.target;
+		let data = {[type]: value};
 
-		this.props.updateValue(data, index)
+		this.props.onDataUpdate(data)
 	}
 
 	handleClick(e) {
@@ -23,12 +23,18 @@ class Input extends React.Component {
 	}
 
 	render() {
-		const {name, canBeDeleted, value} = this.props;
+		const {type, canBeDeleted, value, placeholder} = this.props;
 
 		return (
 			<div>
-				<label>{name.toUpperCase()}: </label>
-				<input name={name} type='text' onChange={this.onUpdate} value={value} />
+				<input
+					placeholder={`Enter a new ${placeholder}`}
+					name={type}
+					type='text'
+					onChange={this.onDataUpdate}
+					value={value}
+				/>
+				
 				{canBeDeleted ? <button onClick={this.handleClick} className='deleteButton'>Delete</button> : null}
 			</div>
 		)

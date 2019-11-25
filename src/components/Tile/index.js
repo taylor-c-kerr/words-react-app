@@ -48,7 +48,7 @@ class Tile extends React.Component {
 	render() {
 		const {isClicked, isDeleted} = this.state;
 		if (isClicked) {
-			const link = `/word/${this.props.id}`;
+			const link = `/${this.props.id}`;
 			return <Redirect push to={link} />; 
 		}
 

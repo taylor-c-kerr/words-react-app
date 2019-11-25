@@ -4,7 +4,6 @@ import Footer from '../../components/Footer/index';
 import Header from '../../components/Header/index';
 import Home from '../Home/index';
 import Word from '../Word/index';
-import AddWord from '../Word/scenes/Add/index';
 import './styles.css';
 
 class App extends React.Component{
@@ -14,8 +13,7 @@ class App extends React.Component{
 				<div className="App">
 					<Header />
 					<Route exact path="/" component={Home} />
-					<Route path="/word/:id" component={Word}/>
-					<Route path="/add" component={AddWord}/>
+					<Route path="/:id" component={Word}/>
 					<Footer />
 				</div>
 			</Router>
