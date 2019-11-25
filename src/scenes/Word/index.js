@@ -100,6 +100,7 @@ class Word extends React.Component {
 				let definitionClone = [...updatedWord.definition];  // array of definition objects: {partOfSpeech, entries}
 				definitionClone[number] = data;
 				updatedWord.definition = definitionClone;
+				updatedWord.category[number] = data.partOfSpeech;
 			}
 
 			const hasBeenEdited = this.hasBeenEdited(this._originalWord, updatedWord);
