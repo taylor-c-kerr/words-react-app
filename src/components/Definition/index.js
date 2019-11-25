@@ -3,23 +3,32 @@ import Button from '../Button/index';
 import PartOfSpeech from '../../components/PartOfSpeech/index';
 
 class Definition extends React.Component {
-	onDataUpdate(i, e) {
-		const {value, type} = e.target;
+	onDataUpdate(data, e) {
 		let {definition, number} = this.props;
 		definition = Object.assign({}, definition);
-		let entries = [...definition.entries];
 
-		if (type === 'button' && value === '') {
-			// we have clicked the add definition button
-			entries.push(value);
+		if (typeof data === 'number') {
+			// update entry
+			const {value, type} = e.target
+			const entries = [...definition.entries];
+			entries[data] = value;
+			definition.entries = entries;
+		}
+		else if (data.hasOwnProperty('partOfSpeech')) {
+			// add part of speech
+			const {partOfSpeech} = data;
+			definition.partOfSpeech = partOfSpeech
 		}
 		else {
-			entries[i] = value;
+			// add blank entry
+			let entries = [...definition.entries];
+			entries.push('');
+			definition.entries = entries;
 		}
 
-		definition.entries = entries;
-		this.props.onDataUpdate(definition, number);
+		// definition.number = number;
 
+		this.props.onDataUpdate(definition, number);
 	}
 
 	render() {
@@ -28,11 +37,11 @@ class Definition extends React.Component {
 		}
 
 		const {definition} = this.props;
-		const {partOfSpeech, entries} = definition
+		const {partOfSpeech, entries} = definition;
 
 		return (
 			<div>
-				<PartOfSpeech value={partOfSpeech} />
+				<PartOfSpeech value={partOfSpeech} onDataUpdate={this.onDataUpdate.bind(this)}/>
 				{
 					entries.map((def, i) => {
 						return <div key={`entry-${i}`}>
@@ -41,13 +50,13 @@ class Definition extends React.Component {
 								onChange={this.onDataUpdate.bind(this, i)} 
 								type='text' 
 								value={def}
-								placeholder='enter a new definition'
+								placeholder='Enter a new definition'
 							/>
 							<br/>
 						</div>
 					})
 				}
-				<Button onClick={ this.onDataUpdate.bind(this, -1) } variant='primary' value='add definition' />
+				<Button onClick={this.onDataUpdate.bind(this, {})} variant='primary' value='add entry' />
 			</div>
 		)
 	}

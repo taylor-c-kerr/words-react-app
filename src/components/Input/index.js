@@ -8,11 +8,11 @@ class Input extends React.Component {
 	}
 
 	onDataUpdate(e) {
-		const {index} = this.props;
-		const {type, value} = e.target;
+		const {type} = this.props;
+		const {value} = e.target;
 		let data = {[type]: value};
 
-		this.props.updateValue(data, index)
+		this.props.onDataUpdate(data)
 	}
 
 	handleClick(e) {
@@ -23,12 +23,12 @@ class Input extends React.Component {
 	}
 
 	render() {
-		const {type, canBeDeleted, value} = this.props;
+		const {type, canBeDeleted, value, placeholder} = this.props;
 
 		return (
 			<div>
 				<input
-					placeholder={`Enter a new ${type}`}
+					placeholder={`Enter a new ${placeholder}`}
 					name={type}
 					type='text'
 					onChange={this.onDataUpdate}

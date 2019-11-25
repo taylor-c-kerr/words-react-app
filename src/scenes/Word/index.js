@@ -5,7 +5,7 @@ import WordsApi from '../../services/api/WordsApi/index';
 import Name from '../../components/Name/index';
 import Definition from '../../components/Definition/index';
 import Button from '../../components/Button/index.js';
-import Validate from '../../services/validation/index'
+import Validate from '../../services/validation/index';
 
 class Word extends React.Component {
 	constructor(props) {
@@ -13,23 +13,35 @@ class Word extends React.Component {
 		this.state = {
 			isLoaded: false,
 			error: false,
-			hasBeenEdited: false
+			hasBeenEdited: false,
+			word: {
+				name: '', 
+				category: [''], 
+				definition: [
+					{
+						partOfSpeech: '', 
+						entries: ['']
+					}
+				]
+			}
 		}
 
 		this.onDataUpdate = this.onDataUpdate.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
+		this.handleAdd = this.handleAdd.bind(this);
 		this.handleClose = this.handleClose.bind(this);
 	}
 
 	componentDidMount() {
-		const emptyWord = {name: '', category: [], definition: [{partOfSpeech: '', entries: ['']}]}
+		const {word} = this.state
 		const {id} = this.props.match.params;
-		console.log(id);
 		if (id === 'add' || id === undefined) {
 			this.setState({
 				isLoaded: true,
-				word: emptyWord
+				word: word,
+				newWord: true
 			})
+			this._originalWord = word;
 		}
 		else {
 			this.getWord(id)
@@ -39,7 +51,7 @@ class Word extends React.Component {
 	async getWord(id) {
 		try {
 			const word = await WordsApi.getWord(id);
-			this._originalWord = word.data
+			this._originalWord = word.data;
 			this.setState({
 				isLoaded: true,
 				word: word.data,
@@ -75,24 +87,23 @@ class Word extends React.Component {
 		}
 
 		return !_.isEqual(previous, copy)
-
 	}
 
-	onDataUpdate(data) {
+	onDataUpdate(data, number=null) {
 		this.setState(prevState => {
-			let updatedWord = Object.assign({}, prevState.word)
-			let newDefinition = [...updatedWord.definition];  // array of definition objects {partOfSpeech, entries}
+			let updatedWord = Object.assign({}, prevState.word);
 
-			newDefinition = newDefinition.map(def => {
-				if (def.partOfSpeech === data.partOfSpeech) {
-					def = data;
-				}
-				return def;
-			})
+			if (data.hasOwnProperty('name')) {
+				updatedWord.name = data.name;
+			}
+			else {
+				let definitionClone = [...updatedWord.definition];  // array of definition objects: {partOfSpeech, entries}
+				definitionClone[number] = data;
+				updatedWord.definition = definitionClone;
+				updatedWord.category[number] = data.partOfSpeech;
+			}
 
-			updatedWord.definition = newDefinition;
-
-			const hasBeenEdited = this.hasBeenEdited(this._originalWord, updatedWord)
+			const hasBeenEdited = this.hasBeenEdited(this._originalWord, updatedWord);
 
 			return {
 				word: updatedWord,
@@ -102,11 +113,18 @@ class Word extends React.Component {
 	}
 
 	async handleSubmit(e) {
-		let {word} = this.state;
+		console.log(this._originalWord);
+		let {word, newWord} = this.state;
 
 		try {
 			const data = Validate.form(word);
-			await WordsApi.updateWord(data)
+			if (newWord) {
+				await WordsApi.postWord(data)
+			}
+			else {
+				await WordsApi.updateWord(data)
+			}
+
 			this.setState({
 				isSubmitted: true,
 				hasBeenEdited: false
@@ -120,6 +138,20 @@ class Word extends React.Component {
 
 	handleClose() {
 		this.setState({isClosed: true})
+	}
+
+	handleAdd() {
+		this.setState(prevState => {
+			const {word} = prevState;
+			const {definition} = word;
+			const blankDefinition = {partOfSpeech: '', entries: ['']};
+
+			definition.push(blankDefinition);
+
+			return {
+				definition: definition
+			}
+		})
 	}
 
 	render() {
@@ -141,7 +173,7 @@ class Word extends React.Component {
 
 			content = 
 			<div>
-				<Name value={name} />
+				<Name value={name} onDataUpdate={this.onDataUpdate}/>
 
  				{definition.map((d, i) => {
 					return <Definition key={`definition-${i}`} definition={d} onDataUpdate={this.onDataUpdate} number={i}/>		
@@ -152,7 +184,11 @@ class Word extends React.Component {
 
 		return <div>
 			{content}
+
+			<div onClick={this.handleAdd}><Button variant='primary' value='Add Part of Speech' /></div>
+
 			{hasBeenEdited ? <button onClick={this.handleSubmit}>SAVE</button> : null}
+
 			<div onClick={this.handleClose}><Button variant='danger' value='Close' /></div>
 		</div>
 	}
