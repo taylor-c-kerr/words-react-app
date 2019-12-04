@@ -1,0 +1,22 @@
+.tile {
+	border: solid;
+	border-color: black;
+	border-radius: 30px;
+	padding: 10px;
+	margin: 10px;
+	background: #f0f1f2;
+
+}
+
+.tile:hover {
+	background: #a9bacb
+}
+
+.deletedTile {
+	border: solid;
+	border-color: red;
+	border-radius: 30px;
+	padding: 10px;
+	margin: 10px;
+	background: red;
+}
