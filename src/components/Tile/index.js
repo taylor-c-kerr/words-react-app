@@ -4,7 +4,7 @@ import Definition from './components/Definition/index';
 import Name from './components/Name/index';
 import Button from '../Button/index';
 import WordsApi from '../../services/api/WordsApi';
-import './styles.css';
+import './styles.scss';
 
 class Tile extends React.Component {
 	constructor(props) {
