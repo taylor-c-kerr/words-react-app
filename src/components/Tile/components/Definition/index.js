@@ -1,7 +1,7 @@
 import React from 'react';
 import PartOfSpeech from './components/PartOfSpeech/index';
 import Entry from './components/Entry/index';
-import './styles.css';
+import './styles.scss';
 
 class Definition extends React.Component {
 	render() {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import moose from './images/happy-moose.png'
-import './styles.css';
+import './styles.scss';
 
 class Header extends React.Component {
 	constructor(props) {

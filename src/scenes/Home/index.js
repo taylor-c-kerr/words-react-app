@@ -3,11 +3,7 @@ import {Redirect} from 'react-router-dom';
 import WordsApi from '../../services/api/WordsApi/index';
 import Tile from '../../components/Tile/index';
 import Button from '../../components/Button/index';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import _ from 'lodash';
-import './styles.css';
+import './styles.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 class Home extends React.Component {
@@ -41,22 +37,8 @@ class Home extends React.Component {
     this.setState({addWordClicked: true})
   }
 
-  createTable(data) {
-    if (data[0] ==='') {
-      return null;
-    }
-    const newData = data.map((d, i) => {
-      return <Col key={`tile-${i}`}>
-        <Tile name={d.name} definition={d.definition} id={d.id} />
-      </Col>
-    })
-
-    return _.chunk(newData, 2);
-  }
-
   render() {
     const { words, isLoaded, error, addWordClicked } = this.state;
-    let formattedWords = this.createTable(words);
 
     if (!isLoaded) {
       return <div>LOADING...</div>
@@ -71,9 +53,12 @@ class Home extends React.Component {
     return (
       <div>
         <div onClick={this.sendToAddPage}><Button variant='primary' value='Add a new word' /></div>
-        <Container >
+        {/*<Container >
           {formattedWords.map((word, i) => <Row key={`row-${i}`}>{word}</Row>)}
-          </Container>
+          </Container>*/}
+        <div className="words-container">
+          {words.map((word, i) => <Tile name={word.name} definition={word.definition} id={word.id} />)}
+        </div>
       </div>
     );
 

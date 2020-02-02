@@ -4,7 +4,7 @@ import Definition from './components/Definition/index';
 import Name from './components/Name/index';
 import Button from '../Button/index';
 import WordsApi from '../../services/api/WordsApi';
-import './styles.css';
+import './styles.scss';
 
 class Tile extends React.Component {
 	constructor(props) {
@@ -54,7 +54,7 @@ class Tile extends React.Component {
 
 		return (
 			<div className={isDeleted ? 'deletedTile' : 'tile'}>
-				<div onClick={this.handleClick}>
+				<div className='definition' onClick={this.handleClick}>
 					<Name name={this.props.name} />
 					<Definition definition={this.props.definition} key={this.props.id} />
 				</div>

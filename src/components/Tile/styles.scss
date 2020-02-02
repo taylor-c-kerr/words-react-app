@@ -5,11 +5,17 @@
 	padding: 10px;
 	margin: 10px;
 	background: #f0f1f2;
+	max-width: 45%;
+	min-width: 45%;
 
-}
+	.definition {
+		max-height: 144px;
+		overflow: hidden;
+	}
 
-.tile:hover {
-	background: #a9bacb
+	&:hover {
+		background: #a9bacb
+	}
 }
 
 .deletedTile {
