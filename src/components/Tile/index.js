@@ -54,7 +54,7 @@ class Tile extends React.Component {
 
 		return (
 			<div className={isDeleted ? 'deletedTile' : 'tile'}>
-				<div onClick={this.handleClick}>
+				<div className='definition' onClick={this.handleClick}>
 					<Name name={this.props.name} />
 					<Definition definition={this.props.definition} key={this.props.id} />
 				</div>
