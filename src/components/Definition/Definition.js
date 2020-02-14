@@ -1,6 +1,6 @@
 import React from 'react';
-import Button from '../Button/index';
-import PartOfSpeech from '../../components/PartOfSpeech/index';
+import Button from '../Button/Button';
+import PartOfSpeech from '../../components/PartOfSpeech/PartOfSpeech';
 
 class Definition extends React.Component {
 	onDataUpdate(data, e) {

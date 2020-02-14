@@ -1,5 +1,5 @@
 import React from 'react';
-import Input from '../Input/index';
+import Input from '../Input/Input';
 
 class PartOfSpeech extends React.Component {
 	render() {

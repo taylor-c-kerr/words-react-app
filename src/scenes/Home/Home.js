@@ -1,8 +1,8 @@
 import React from 'react';
 import {Redirect} from 'react-router-dom';
 import WordsApi from '../../services/api/WordsApi/index';
-import Tile from '../../components/Tile/index';
-import Button from '../../components/Button/index';
+import Tile from '../../components/Tile/Tile';
+import Button from '../../components/Button/Button';
 import './styles.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 

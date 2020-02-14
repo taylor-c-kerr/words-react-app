@@ -1,9 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import Footer from '../../components/Footer/index';
-import Header from '../../components/Header/index';
-import Home from '../Home/index';
-import Word from '../Word/index';
+import Footer from '../../components/Footer/Footer';
+import Header from '../../components/Header/Header';
+import Home from '../Home/Home';
+import Word from '../Word/Word';
 import './styles.css';
 
 class App extends React.Component{

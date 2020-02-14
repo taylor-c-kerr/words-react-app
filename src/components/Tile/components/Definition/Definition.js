@@ -1,6 +1,6 @@
 import React from 'react';
-import PartOfSpeech from './components/PartOfSpeech/index';
-import Entry from './components/Entry/index';
+import PartOfSpeech from './components/PartOfSpeech/PartOfSpeech';
+import Entry from './components/Entry/Entry';
 import './styles.scss';
 
 class Definition extends React.Component {

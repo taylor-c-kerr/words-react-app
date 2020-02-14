@@ -1,8 +1,8 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import Definition from './components/Definition/index';
-import Name from './components/Name/index';
-import Button from '../Button/index';
+import Definition from './components/Definition/Definition';
+import Name from './components/Name/Name';
+import Button from '../Button/Button';
 import WordsApi from '../../services/api/WordsApi';
 import './styles.scss';
 

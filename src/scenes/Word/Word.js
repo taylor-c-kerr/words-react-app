@@ -2,9 +2,9 @@ import React from 'react';
 import {Redirect} from 'react-router-dom';
 import _ from 'lodash';
 import WordsApi from '../../services/api/WordsApi/index';
-import Name from '../../components/Name/index';
-import Definition from '../../components/Definition/index';
-import Button from '../../components/Button/index.js';
+import Name from '../../components/Name/Name';
+import Definition from '../../components/Definition/Definition';
+import Button from '../../components/Button/Button';
 import Validate from '../../services/validation/index';
 
 class Word extends React.Component {
