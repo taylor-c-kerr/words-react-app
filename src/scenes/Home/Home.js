@@ -54,11 +54,8 @@ class Home extends React.Component {
     return (
       <div>
         <div onClick={this.sendToAddPage}><Button variant='primary' value='Add a new word' /></div>
-        {/*<Container >
-          {formattedWords.map((word, i) => <Row key={`row-${i}`}>{word}</Row>)}
-          </Container>*/}
         <div className="words-container">
-          {words.map((word, i) => <Tile name={word.name} definition={word.definition} id={word.id} />)}
+          {words.map((word, i) => <Tile name={word.name} definition={word.definition} id={word.id} key={`tile-${i}`} />)}
         </div>
       </div>
     );
