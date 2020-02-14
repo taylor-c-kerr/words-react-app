@@ -3,6 +3,7 @@ import {Redirect} from 'react-router-dom';
 import WordsApi from '../../services/api/WordsApi/index';
 import Tile from '../../components/Tile/Tile';
 import Button from '../../components/Button/Button';
+import LoadingIcon from '../../components/LoadingIcon/LoadingIcon';
 import './styles.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -41,7 +42,7 @@ class Home extends React.Component {
     const { words, isLoaded, error, addWordClicked } = this.state;
 
     if (!isLoaded) {
-      return <div>LOADING...</div>
+      return <LoadingIcon />
     }
     if (error) {
       return <div>{error}</div>
