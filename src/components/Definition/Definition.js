@@ -1,6 +1,6 @@
 import React from 'react';
 import Button from '../Button/Button';
-import PartOfSpeech from '../../components/PartOfSpeech/PartOfSpeech';
+import PartOfSpeech from '../PartOfSpeech/PartOfSpeech';
 
 class Definition extends React.Component {
 	onDataUpdate(data, e) {
@@ -31,6 +31,21 @@ class Definition extends React.Component {
 		this.props.onDataUpdate(definition, number);
 	}
 
+	mapEntries = (entries) => {
+		return entries.map((def, i) => {
+			return <div key={`entry-${i}`}>
+				{`${i+1}. `}
+				<input 
+					onChange={this.onDataUpdate.bind(this, i)} 
+					type='text' 
+					value={def}
+					placeholder='Enter a new definition'
+				/>
+				<br/>
+			</div>
+		})
+	}
+
 	render() {
 		if (!this.props.definition) {
 			return <div>LOADING...</div>
@@ -42,20 +57,7 @@ class Definition extends React.Component {
 		return (
 			<div>
 				<PartOfSpeech value={partOfSpeech} onDataUpdate={this.onDataUpdate.bind(this)}/>
-				{
-					entries.map((def, i) => {
-						return <div key={`entry-${i}`}>
-							{`${i+1}. `}
-							<input 
-								onChange={this.onDataUpdate.bind(this, i)} 
-								type='text' 
-								value={def}
-								placeholder='Enter a new definition'
-							/>
-							<br/>
-						</div>
-					})
-				}
+				{ this.mapEntries(entries) }
 				<Button onClick={this.onDataUpdate.bind(this, {})} variant='primary' value='add entry' />
 			</div>
 		)
