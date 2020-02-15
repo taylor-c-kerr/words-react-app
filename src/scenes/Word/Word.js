@@ -191,7 +191,7 @@ class Word extends React.Component {
 
 			<div onClick={this.handleAdd}><Button variant='primary' value='Add Part of Speech' /></div>
 
-			{hasBeenEdited ? <button onClick={this.handleSubmit}>SAVE</button> : null}
+			{hasBeenEdited ? <Button onClick={this.handleSubmit} value='SAVE' /> : null}
 
 			<div onClick={this.handleClose}><Button variant='danger' value='Close' /></div>
 		</div>
