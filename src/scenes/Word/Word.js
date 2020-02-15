@@ -6,6 +6,7 @@ import Name from '../../components/Name/Name';
 import Definition from '../../components/Definition/Definition';
 import Button from '../../components/Button/Button';
 import Validate from '../../services/validation/index';
+import LoadingIcon from '../../components/LoadingIcon/LoadingIcon';
 
 class Word extends React.Component {
 	constructor(props) {
@@ -165,7 +166,8 @@ class Word extends React.Component {
 			content = <div>THERE WAS AN ERROR</div>;
 		}
 		else if (!isLoaded) {
-			content = <div>LOADING...</div> ;
+			content = <LoadingIcon />;
+
 		}
 		else {
 			const {word}  = this.state;
