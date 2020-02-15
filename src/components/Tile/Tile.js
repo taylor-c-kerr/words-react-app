@@ -59,7 +59,7 @@ class Tile extends React.Component {
 					<Definition definition={this.props.definition} />
 				</div>
 
-				<div className="deleteButton" onClick={this.handleDelete}><Button variant='danger' value='Delete' /></div>
+				<div><Button variant='danger' value='Delete' onClick={this.handleDelete} /></div>
 			</div>
 		)
 	}

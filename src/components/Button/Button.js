@@ -1,6 +1,7 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Btn from 'react-bootstrap/Button';
+import './styles.scss';
 
 class Button extends React.Component {
 	constructor(props) {
@@ -22,7 +23,7 @@ class Button extends React.Component {
 	render() {
 		const {value, variant, onClick} = this.props;
 		return (
-			<Btn onClick={onClick} variant={[variant || 'primary']}>{value}</Btn>
+			<Btn className='deleteButton' onClick={onClick} variant={[variant || 'primary']}>{value}</Btn>
 		)
 	}
 
