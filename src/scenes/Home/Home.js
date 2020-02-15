@@ -4,6 +4,7 @@ import WordsApi from '../../services/api/WordsApi/index';
 import Tile from '../../components/Tile/Tile';
 import Button from '../../components/Button/Button';
 import LoadingIcon from '../../components/LoadingIcon/LoadingIcon';
+import Error from '../../components/Error/Error';
 import './styles.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -28,6 +29,7 @@ class Home extends React.Component {
       })
     }
     catch (error) {
+      console.error(error)
       this.setState({
         error: error
       })
@@ -45,7 +47,7 @@ class Home extends React.Component {
       return <LoadingIcon />
     }
     if (error) {
-      return <div>{error}</div>
+      return <Error />
     }
     if (addWordClicked) {
       return <Redirect push to='/add' />

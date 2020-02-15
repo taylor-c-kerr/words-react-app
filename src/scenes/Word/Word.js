@@ -7,6 +7,7 @@ import Definition from '../../components/Definition/Definition';
 import Button from '../../components/Button/Button';
 import Validate from '../../services/validation/index';
 import LoadingIcon from '../../components/LoadingIcon/LoadingIcon';
+import Error from '../../components/Error/Error';
 
 class Word extends React.Component {
 	constructor(props) {
@@ -60,7 +61,7 @@ class Word extends React.Component {
 			return word;
 		}
 		catch (error) {
-			console.log(error);
+			console.error(error);
 			this.setState({
 				error: true
 			})
@@ -114,7 +115,6 @@ class Word extends React.Component {
 	}
 
 	async handleSubmit(e) {
-		console.log(this._originalWord);
 		let {word, newWord} = this.state;
 
 		try {
@@ -132,8 +132,10 @@ class Word extends React.Component {
 			})
 		}
 		catch (error) {
-			console.log(error);
-			alert(error);
+			console.error(error);
+			this.setState({
+				error: true
+			})
 		}
 	}
 
@@ -163,7 +165,7 @@ class Word extends React.Component {
 			return <Redirect push to='/' />
 		}
 		else if (error) {
-			content = <div>THERE WAS AN ERROR</div>;
+			content = <Error />;
 		}
 		else if (!isLoaded) {
 			content = <LoadingIcon />;
