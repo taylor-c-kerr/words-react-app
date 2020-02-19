@@ -1,7 +1,5 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import Definition from './components/Definition/Definition';
-import Name from './components/Name/Name';
 import Button from '../Button/Button';
 import WordsApi from '../../services/api/WordsApi';
 import './styles.scss';
@@ -31,7 +29,7 @@ class Tile extends React.Component {
 
 	async handleDelete() {
 		const {id} = this.props;
-		const toDelete = await window.confirm(`delete ${id}?`);
+		const toDelete = window.confirm(`delete ${id}?`);
 		if (toDelete) {
 			this.setState({isDeleted: true});
 
@@ -45,8 +43,22 @@ class Tile extends React.Component {
 		}
 	}
 
+	renderDefinition(definition) {
+		return definition.map((def, i) => {
+			const {partOfSpeech, entries} = def;
+			return <div key={`definition-${i}`}>
+				<div className='partOfSpeech'>{partOfSpeech}</div>
+				{entries.map((entry , ei) => {
+					return <div className='entry' key={`entry-${i}-${ei}`}>{ei + 1}. {entry}</div>
+				})}
+			</div>
+		})
+}
+
 	render() {
 		const {isClicked, isDeleted} = this.state;
+		// let {definition} = this.props;
+		const definition = this.renderDefinition(this.props.definition);
 		if (isClicked) {
 			const link = `/${this.props.id}`;
 			return <Redirect push to={link} />; 
@@ -55,8 +67,13 @@ class Tile extends React.Component {
 		return (
 			<div className={isDeleted ? 'deletedTile' : 'tile'}>
 				<div className='definition' onClick={this.handleClick}>
-					<Name name={this.props.name} />
-					<Definition definition={this.props.definition} />
+					<div className='name'>
+						{this.props.name}
+					</div>
+
+					{/* <Definition definition={this.props.definition} /> */}
+					{/* {this.renderDefinition.bind(this, definition)} */}
+					{definition}
 				</div>
 
 				<div><Button variant='danger' value='Delete' onClick={this.handleDelete} /></div>
