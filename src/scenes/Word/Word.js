@@ -35,6 +35,7 @@ class Word extends React.Component {
 	}
 
 	componentDidMount() {
+		// this.setState({ error: true });
 		const {word} = this.state
 		const {id} = this.props.match.params;
 		if (id === 'add' || id === undefined) {
@@ -159,42 +160,31 @@ class Word extends React.Component {
 
 	render() {
 		const {isLoaded, isClosed, error, hasBeenEdited} = this.state;
-		let content;
 
 		if (isClosed) {
 			return <Redirect push to='/' />
 		}
 		else if (error) {
-			content = <Error />;
+			return <Error />;
 		}
 		else if (!isLoaded) {
-			content = <LoadingIcon />;
+			return <LoadingIcon />;
 
 		}
 		else {
 			const {word}  = this.state;
 			const {name, definition} = word;
-
-			content = 
-			<div>
-				<Name value={name} onDataUpdate={this.onDataUpdate}/>
-
- 				{definition.map((d, i) => {
-					return <Definition key={`definition-${i}`} definition={d} onDataUpdate={this.onDataUpdate} number={i}/>		
-				})}
-				
-			</div>;
+		
+			return <div>
+				<div>
+					<Name value={name} onDataUpdate={this.onDataUpdate}/>
+					{definition.map((d, i) => <Definition key={`definition-${i}`} definition={d} onDataUpdate={this.onDataUpdate} number={i}/>)}
+				</div>
+				<div onClick={this.handleAdd}><Button variant='primary' value='Add Part of Speech' /></div>
+				{hasBeenEdited ? <Button onClick={this.handleSubmit} value='SAVE' /> : null}
+				<div onClick={this.handleClose}><Button variant='danger' value='Close' /></div>
+			</div>
 		}
-
-		return <div>
-			{content}
-
-			<div onClick={this.handleAdd}><Button variant='primary' value='Add Part of Speech' /></div>
-
-			{hasBeenEdited ? <Button onClick={this.handleSubmit} value='SAVE' /> : null}
-
-			<div onClick={this.handleClose}><Button variant='danger' value='Close' /></div>
-		</div>
 	}
 }
 
