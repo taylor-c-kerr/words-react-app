@@ -8,7 +8,7 @@ class Error extends React.Component {
       <div className='image-container'>
         <h2>UH OH...</h2>
         <div>Something went wrong.</div>
-        <div><img src={image} className='sad-moose' /></div>
+        <div><img src={image} className='sad-moose' alt='Sad moose' /></div>
       </div>
     );
   }
