@@ -57,7 +57,6 @@ class Tile extends React.Component {
 
 	render() {
 		const {isClicked, isDeleted} = this.state;
-		// let {definition} = this.props;
 		const definition = this.renderDefinition(this.props.definition);
 		if (isClicked) {
 			const link = `/${this.props.id}`;
@@ -70,13 +69,10 @@ class Tile extends React.Component {
 					<div className='name'>
 						{this.props.name}
 					</div>
-
-					{/* <Definition definition={this.props.definition} /> */}
-					{/* {this.renderDefinition.bind(this, definition)} */}
 					{definition}
 				</div>
 
-				<div><Button variant='danger' value='Delete' onClick={this.handleDelete} /></div>
+				{!this.state.isDeleted ? <div><Button variant='danger' value='Delete' onClick={this.handleDelete} /></div> : null}
 			</div>
 		)
 	}
