@@ -7,46 +7,55 @@ import LoadingIcon from '../../components/LoadingIcon/LoadingIcon';
 import Error from '../../components/Error/Error';
 import './styles.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { connect } from 'react-redux';
+import _ from 'lodash';
 
 class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isLoaded: false,
-      words: ['']
     };
 
     this.sendToAddPage = this.sendToAddPage.bind(this)
   }
 
   async componentDidMount() {
-    try {
-      const words = await WordsApi.getWords();
-      this.setState({
-        isLoaded: true,
-        error: null,
-        words: words.data
-      })
-    }
-    catch (error) {
-      console.error(error)
-      this.setState({
-        error: error
-      })
+    if (_.isEmpty(this.props.state.words)) {
+      // this.props.dispatch(fetchWordsPending());  // TODO: does not work, find out why
+      this.props.dispatch({
+        type: 'FETCH_WORDS_PENDING'
+      });
+      try {
+        const words = await WordsApi.getWords();
+        // this.props.dispatch(fetchWordsSuccess(words.data));  // TODO: does not work, find out why
+        this.props.dispatch({
+          type: 'FETCH_WORDS_SUCCESS',
+          payload: words.data
+        })
+      } catch (error) {
+        // this.props.dispatch(fetchWordsError(error));  // TODO: does not work, find out why
+        this.props.dispatch({
+          type: 'FETCH_WORDS_ERROR',
+          error
+        })
+      }
     }
   }
 
   sendToAddPage() {
-    this.setState({addWordClicked: true})
+    this.setState({addWordClicked: true});
   }
 
   render() {
-    const { words, isLoaded, error, addWordClicked } = this.state;
+    const { addWordClicked } = this.state;
+    const { words, pending, error } = this.props.state;
 
-    if (!isLoaded) {
+    if (pending) {
       return <LoadingIcon />
     }
     if (error) {
+      console.error(error);
       return <Error />
     }
     if (addWordClicked) {
@@ -65,4 +74,7 @@ class Home extends React.Component {
   }
 }
 
-export default Home;
+const mapStateToProps = (state) => {
+  return { state }
+ }
+export default connect(mapStateToProps)(Home);

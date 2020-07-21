@@ -1,5 +1,6 @@
 import axios from 'axios';
-const BASE_URL = 'https://api.thoughtfulmoose.com';
+// const BASE_URL = 'https://api.thoughtfulmoose.com';
+const BASE_URL = 'http://localhost:3000'
 
 class WordsApi {
 	async getWords() {
