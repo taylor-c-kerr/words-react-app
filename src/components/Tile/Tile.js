@@ -3,6 +3,7 @@ import { Redirect } from 'react-router-dom';
 import Button from '../Button/Button';
 import WordsApi from '../../services/api/WordsApi';
 import './styles.scss';
+import { connect } from 'react-redux';
 
 class Tile extends React.Component {
 	constructor(props) {
@@ -23,7 +24,7 @@ class Tile extends React.Component {
 
 	markAsDeleted(isDeletedFromChild) {
 		if (isDeletedFromChild) {
-			this.setState({isDeleted: true})
+			this.setState({isDeleted: true});
 		}
 	}
 
@@ -31,14 +32,26 @@ class Tile extends React.Component {
 		const {id} = this.props;
 		const toDelete = window.confirm(`delete ${id}?`);
 		if (toDelete) {
-			this.setState({isDeleted: true});
-
 			try{
-				await WordsApi.deleteWord(id);
+				this.props.dispatch({
+					type: 'DELETE_WORD_PENDING'
+				})
+				 await WordsApi.deleteWord(id);
+				 this.props.dispatch({
+					 type: 'DELETE_WORD_SUCCESS'
+				 })
+				 this.props.dispatch({
+					 type: 'DELETE_WORD',
+					 id
+				 })
+				 this.setState({isDeleted: true});
 			}
 			catch(error) {
-				console.log(error);
-				alert(error);
+				console.error(error);
+				this.props.dispatch({
+					type: 'DELETE_WORD_ERROR',
+					error
+				})
 			}
 		}
 	}
@@ -78,4 +91,10 @@ class Tile extends React.Component {
 	}
 }
 
-export default Tile;
+const mapStateToProps = (state) => {
+  return { 
+		words: state.getWordsReducer.words,
+		delete: state.deleteWordReducer
+	}
+ }
+export default connect(mapStateToProps)(Tile);

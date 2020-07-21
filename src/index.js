@@ -4,10 +4,9 @@ import App from './scenes/App/App';
 import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
-// import store from 'redux/store';
-import {wordsReducer} from './redux/reducer';
+import { rootReducer } from './redux/reducers/index';
 
-const store = createStore(wordsReducer);
+const store = createStore(rootReducer);
 const rootElement = document.getElementById('root')
 
 ReactDOM.render(

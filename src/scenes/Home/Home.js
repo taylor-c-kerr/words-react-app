@@ -31,7 +31,7 @@ class Home extends React.Component {
         // this.props.dispatch(fetchWordsSuccess(words.data));  // TODO: does not work, find out why
         this.props.dispatch({
           type: 'FETCH_WORDS_SUCCESS',
-          payload: words.data
+          words: words.data
         })
       } catch (error) {
         // this.props.dispatch(fetchWordsError(error));  // TODO: does not work, find out why
@@ -75,6 +75,6 @@ class Home extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  return { state }
+  return { state: state.getWordsReducer }
  }
 export default connect(mapStateToProps)(Home);
