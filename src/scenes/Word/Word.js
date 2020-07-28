@@ -8,6 +8,7 @@ import Button from '../../components/Button/Button';
 import Validate from '../../services/validation/index';
 import LoadingIcon from '../../components/LoadingIcon/LoadingIcon';
 import Error from '../../components/Error/Error';
+import { connect } from 'react-redux';
 
 class Word extends React.Component {
 	constructor(props) {
@@ -34,8 +35,7 @@ class Word extends React.Component {
 		this.handleClose = this.handleClose.bind(this);
 	}
 
-	componentDidMount() {
-		// this.setState({ error: true });
+	async componentDidMount() {
 		const {word} = this.state
 		const {id} = this.props.match.params;
 		if (id === 'add' || id === undefined) {
@@ -47,7 +47,15 @@ class Word extends React.Component {
 			this._originalWord = word;
 		}
 		else {
-			this.getWord(id)
+			if (!this.props.viewedWords[id]) {
+				await this.getWord(id);
+			} else {
+				this._originalWord = this.props.viewedWords[id];
+				this.setState({
+					isLoaded: true,
+					word: this._originalWord,
+				})	
+			}
 		}
 	}
 
@@ -55,6 +63,7 @@ class Word extends React.Component {
 		try {
 			const word = await WordsApi.getWord(id);
 			this._originalWord = word.data;
+			this.props.addViewedWord(this._originalWord);
 			this.setState({
 				isLoaded: true,
 				word: word.data,
@@ -188,4 +197,19 @@ class Word extends React.Component {
 	}
 }
 
-export default Word;
+const mapStateToProps = (state) => {
+  return { 
+		words: state.getWordsReducer.words,
+		viewedWords: state.getWordsReducer.viewedWords,
+		delete: state.deleteWordReducer
+	}
+}
+const mapDispatchToProps = (dispatch) => {
+	return {
+		addViewedWord: (viewedWord) => {
+			dispatch({ type: 'ADD_VIEWED_WORD', viewedWord });
+		}
+	}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Word);

@@ -22,23 +22,12 @@ class Home extends React.Component {
 
   async componentDidMount() {
     if (_.isEmpty(this.props.state.words)) {
-      // this.props.dispatch(fetchWordsPending());  // TODO: does not work, find out why
-      this.props.dispatch({
-        type: 'FETCH_WORDS_PENDING'
-      });
+      this.props.getWordsPending();
       try {
         const words = await WordsApi.getWords();
-        // this.props.dispatch(fetchWordsSuccess(words.data));  // TODO: does not work, find out why
-        this.props.dispatch({
-          type: 'FETCH_WORDS_SUCCESS',
-          words: words.data
-        })
+        this.props.getWordsSuccess(words.data);
       } catch (error) {
-        // this.props.dispatch(fetchWordsError(error));  // TODO: does not work, find out why
-        this.props.dispatch({
-          type: 'FETCH_WORDS_ERROR',
-          error
-        })
+        this.props.getWordsError(error);
       }
     }
   }
@@ -76,5 +65,13 @@ class Home extends React.Component {
 
 const mapStateToProps = (state) => {
   return { state: state.getWordsReducer }
- }
-export default connect(mapStateToProps)(Home);
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getWordsPending: () => dispatch({ type: 'FETCH_WORDS_PENDING' }),
+    getWordsSuccess: (words) => dispatch({ type: 'FETCH_WORDS_SUCCESS', words }),
+    getWordsError: (error) => dispatch({ type: 'FETCH_WORDS_ERROR', error })
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

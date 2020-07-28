@@ -33,25 +33,17 @@ class Tile extends React.Component {
 		const toDelete = window.confirm(`delete ${id}?`);
 		if (toDelete) {
 			try{
-				this.props.dispatch({
-					type: 'DELETE_WORD_PENDING'
-				})
-				 await WordsApi.deleteWord(id);
-				 this.props.dispatch({
-					 type: 'DELETE_WORD_SUCCESS'
-				 })
-				 this.props.dispatch({
-					 type: 'DELETE_WORD',
-					 id
-				 })
-				 this.setState({isDeleted: true});
+				this.props.deleteWordPending();
+				await WordsApi.deleteWord(id);
+				this.props.deleteWordSuccess();
+				this.props.deleteWord(id);
+				// as of now, the delete reducer is filtering out the deleted word and the state is setting the wrong word as deleted
+				// TODO: get the old functionality working
+				// this.setState({ isDeleted: true });
 			}
 			catch(error) {
 				console.error(error);
-				this.props.dispatch({
-					type: 'DELETE_WORD_ERROR',
-					error
-				})
+				this.props.deleteWordError(error);
 			}
 		}
 	}
@@ -94,7 +86,21 @@ class Tile extends React.Component {
 const mapStateToProps = (state) => {
   return { 
 		words: state.getWordsReducer.words,
+		viewedWords: state.getWordsReducer.viewedWords,
 		delete: state.deleteWordReducer
 	}
- }
-export default connect(mapStateToProps)(Tile);
+}
+const mapDispatchToProps = (dispatch) => {
+	return {
+    deleteWordPending: () => dispatch({ type: 'DELETE_WORD_PENDING' }),
+    deleteWordSuccess: (words) => dispatch({ type: 'DELETE_WORD_SUCCESS', words }),
+		deleteWordError: (error) => dispatch({ type: 'DELETE_WORD', error }),
+		deleteWord: (id) => dispatch({ type: 'DELETE_WORD', id }),
+		addViewedWord: (viewedWord) => {
+			if (!this.props.viewedWords.find(word => word.id === viewedWord.id)) {
+				dispatch({ type: 'ADD_VIEWED_WORD', viewedWord});
+			}
+		}
+	}
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Tile);
