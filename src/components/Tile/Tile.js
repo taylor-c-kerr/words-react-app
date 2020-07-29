@@ -85,8 +85,8 @@ class Tile extends React.Component {
 
 const mapStateToProps = (state) => {
   return { 
-		words: state.getWordsReducer.words,
-		viewedWords: state.getWordsReducer.viewedWords,
+		words: state.allWordsReducer.words,
+		viewedWords: state.allWordsReducer.viewedWords,
 		delete: state.deleteWordReducer
 	}
 }

@@ -28,7 +28,6 @@ class Word extends React.Component {
 				]
 			}
 		}
-
 		this.onDataUpdate = this.onDataUpdate.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleAdd = this.handleAdd.bind(this);
@@ -54,13 +53,14 @@ class Word extends React.Component {
 				this.setState({
 					isLoaded: true,
 					word: this._originalWord,
-				})	
+				})
 			}
 		}
 	}
 
 	async getWord(id) {
 		try {
+			this.props.currentWordPending();
 			const word = await WordsApi.getWord(id);
 			this._originalWord = word.data;
 			this.props.addViewedWord(this._originalWord);
@@ -68,13 +68,14 @@ class Word extends React.Component {
 				isLoaded: true,
 				word: word.data,
 			})
-			return word;
+			this.props.currentWordSuccess(word.data);
 		}
 		catch (error) {
 			console.error(error);
 			this.setState({
 				error: true
 			})
+			this.props.currentWordError(error);
 		}
 	}
 
@@ -128,12 +129,16 @@ class Word extends React.Component {
 		let {word, newWord} = this.state;
 
 		try {
-			const data = Validate.form(word);
+			const validatedWord = Validate.form(word);
+			this.props.currentWordPending();
 			if (newWord) {
-				await WordsApi.postWord(data)
+				await WordsApi.postWord(validatedWord);
+				this.props.currentWordSuccess(validatedWord);
+				this.props.allWordsSuccess([...this.props.words, validatedWord])
 			}
 			else {
-				await WordsApi.updateWord(data)
+				await WordsApi.updateWord(validatedWord);
+				this.props.currentWordSuccess(validatedWord);
 			}
 
 			this.setState({
@@ -145,12 +150,15 @@ class Word extends React.Component {
 			console.error(error);
 			this.setState({
 				error: true
-			})
+			});
+			this.props.currentWordError(error);
 		}
 	}
 
 	handleClose() {
-		this.setState({isClosed: true})
+		this.setState({isClosed: true});
+		this.props.currentWordError(null);
+		this.props.currentWordSuccess({});
 	}
 
 	handleAdd() {
@@ -199,16 +207,19 @@ class Word extends React.Component {
 
 const mapStateToProps = (state) => {
   return { 
-		words: state.getWordsReducer.words,
-		viewedWords: state.getWordsReducer.viewedWords,
+		words: state.allWordsReducer.words,
+		viewedWords: state.allWordsReducer.viewedWords,
+		currentWord: state.currentWordReducer.currentWord,
 		delete: state.deleteWordReducer
 	}
 }
 const mapDispatchToProps = (dispatch) => {
 	return {
-		addViewedWord: (viewedWord) => {
-			dispatch({ type: 'ADD_VIEWED_WORD', viewedWord });
-		}
+		addViewedWord: (viewedWord) => dispatch({ type: 'ADD_VIEWED_WORD', viewedWord }),
+		currentWordPending: () => dispatch({ type: 'CURRENT_WORD_PENDING' }),
+		currentWordError: () => dispatch({ type: 'CURRENT_WORD_ERROR' }),
+		currentWordSuccess: (currentWord) => dispatch({ type: 'CURRENT_WORD_SUCCESS', currentWord }),
+		allWordsSuccess: (words) => dispatch({ type: 'ALL_WORDS_SUCCESS', words })
 	}
 }
 

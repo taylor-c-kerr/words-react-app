@@ -1,11 +1,12 @@
 const initialState = {
   pending: false,
+  // TODO: make words follow the object format where the key is the word id
   words: [],
   viewedWords: {},
   error: null
 }
 
-export function getWordsReducer(state = initialState, action) {
+export function allWordsReducer(state = initialState, action) {
   switch(action.type) {
     case 'FETCH_WORDS_PENDING':
       return {
@@ -39,7 +40,8 @@ export function getWordsReducer(state = initialState, action) {
         ...state,
         viewedWords: Object.assign({}, state.viewedWords, viewedWordToAdd)
       }
-    case 'UPDATED_ADDED_WORD':
+    // same as add?
+    case 'UPDATE_VIEWED_WORD':
       return {
         ...state
       }

@@ -64,7 +64,7 @@ class Home extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  return { state: state.getWordsReducer }
+  return { state: state.allWordsReducer }
 }
 
 const mapDispatchToProps = (dispatch) => {
