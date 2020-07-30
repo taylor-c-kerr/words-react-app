@@ -1,7 +1,6 @@
 const initialState = {
   pending: false,
-  // TODO: make words follow the object format where the key is the word id
-  words: [],
+  words: {},
   viewedWords: {},
   error: null
 }
@@ -19,17 +18,26 @@ export function allWordsReducer(state = initialState, action) {
         pending: false,
         words: action.words
       }
+    case 'ADD_TO_ALL_WORDS':
+      const word = {};
+      word[action.currentWord.id] = action.currentWord;
+      return {
+        ...state,
+        pending: false,
+        words: Object.assign({}, state.words, word)
+      }
     case 'FETCH_WORDS_ERROR':
       return {
         ...state,
         pending: false,
         error: action.error
       }
-    case 'DELETE_WORD': 
+    case 'DELETE_WORD':
+      delete state.words[action.id];
       return {
         ...state,
         pending: false,
-        words: state.words.filter(word => word.id !== action.id)
+        words: state.words
       }
     case 'ADD_VIEWED_WORD':
       const { viewedWord } = action;
@@ -39,11 +47,6 @@ export function allWordsReducer(state = initialState, action) {
       return {
         ...state,
         viewedWords: Object.assign({}, state.viewedWords, viewedWordToAdd)
-      }
-    // same as add?
-    case 'UPDATE_VIEWED_WORD':
-      return {
-        ...state
       }
     default: 
       return state;

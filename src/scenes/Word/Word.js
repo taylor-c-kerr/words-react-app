@@ -63,12 +63,12 @@ class Word extends React.Component {
 			this.props.currentWordPending();
 			const word = await WordsApi.getWord(id);
 			this._originalWord = word.data;
-			this.props.addViewedWord(this._originalWord);
 			this.setState({
 				isLoaded: true,
 				word: word.data,
 			})
-			this.props.currentWordSuccess(word.data);
+			this.props.addViewedWord(this._originalWord);
+			this.props.addCurrentWord(this._originalWord);
 		}
 		catch (error) {
 			console.error(error);
@@ -102,6 +102,7 @@ class Word extends React.Component {
 		return !_.isEqual(previous, copy)
 	}
 
+	// what does this do?
 	onDataUpdate(data, number=null) {
 		this.setState(prevState => {
 			let updatedWord = Object.assign({}, prevState.word);
@@ -129,17 +130,17 @@ class Word extends React.Component {
 		let {word, newWord} = this.state;
 
 		try {
-			const validatedWord = Validate.form(word);
+			word = Validate.form(word);
 			this.props.currentWordPending();
 			if (newWord) {
-				await WordsApi.postWord(validatedWord);
-				this.props.currentWordSuccess(validatedWord);
-				this.props.allWordsSuccess([...this.props.words, validatedWord])
+				await WordsApi.postWord(word);
+				this.props.addCurrentWord(word);
 			}
 			else {
-				await WordsApi.updateWord(validatedWord);
-				this.props.currentWordSuccess(validatedWord);
+				await WordsApi.updateWord(word);
 			}
+			this.props.addToAllWords(word);
+			this.props.addCurrentWord(word);
 
 			this.setState({
 				isSubmitted: true,
@@ -158,9 +159,10 @@ class Word extends React.Component {
 	handleClose() {
 		this.setState({isClosed: true});
 		this.props.currentWordError(null);
-		this.props.currentWordSuccess({});
+		this.props.addCurrentWord({});
 	}
 
+	// what is this method?
 	handleAdd() {
 		this.setState(prevState => {
 			const {word} = prevState;
@@ -218,8 +220,8 @@ const mapDispatchToProps = (dispatch) => {
 		addViewedWord: (viewedWord) => dispatch({ type: 'ADD_VIEWED_WORD', viewedWord }),
 		currentWordPending: () => dispatch({ type: 'CURRENT_WORD_PENDING' }),
 		currentWordError: () => dispatch({ type: 'CURRENT_WORD_ERROR' }),
-		currentWordSuccess: (currentWord) => dispatch({ type: 'CURRENT_WORD_SUCCESS', currentWord }),
-		allWordsSuccess: (words) => dispatch({ type: 'ALL_WORDS_SUCCESS', words })
+		addCurrentWord: (currentWord) => dispatch({ type: 'CURRENT_WORD_SUCCESS', currentWord }),
+		addToAllWords: (currentWord) => dispatch({ type: 'ADD_TO_ALL_WORDS', currentWord })
 	}
 }
 

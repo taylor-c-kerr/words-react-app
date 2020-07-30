@@ -22,12 +22,14 @@ class Home extends React.Component {
 
   async componentDidMount() {
     if (_.isEmpty(this.props.state.words)) {
-      this.props.getWordsPending();
+      this.props.pending();
       try {
         const words = await WordsApi.getWords();
-        this.props.getWordsSuccess(words.data);
+        const wordsToAdd = {};
+        words.data.forEach(word => wordsToAdd[word.id] = word);
+        this.props.addWords(wordsToAdd);
       } catch (error) {
-        this.props.getWordsError(error);
+        this.props.error(error);
       }
     }
   }
@@ -55,7 +57,7 @@ class Home extends React.Component {
       <div>
         <div onClick={this.sendToAddPage}><Button variant='primary' value='Add a new word' /></div>
         <div className="words-container">
-          {words.map((word, i) => <Tile name={word.name} definition={word.definition} id={word.id} key={`tile-${i}`} />)}
+        {Object.keys(words).map((id, i) => <Tile name={words[id].name} definition={words[id].definition} id={words[id].id} key={`tile-${i}`} />)}
         </div>
       </div>
     );
@@ -69,9 +71,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getWordsPending: () => dispatch({ type: 'FETCH_WORDS_PENDING' }),
-    getWordsSuccess: (words) => dispatch({ type: 'FETCH_WORDS_SUCCESS', words }),
-    getWordsError: (error) => dispatch({ type: 'FETCH_WORDS_ERROR', error })
+    pending: () => dispatch({ type: 'FETCH_WORDS_PENDING' }),
+    addWords: (words) => dispatch({ type: 'FETCH_WORDS_SUCCESS', words }),
+    error: (error) => dispatch({ type: 'FETCH_WORDS_ERROR', error })
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
