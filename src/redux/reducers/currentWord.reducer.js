@@ -4,18 +4,6 @@ const initialState = {
   error: null,
 };
 
-/* 
-  GET_WORD
-  SET_PENDING
-  SET_ERROR
-  SET_SUCCESS
-  UPDATE_WORD  
-*/
-/* 
-case 'ACTION':
-  return {}
-*/
-
 export function currentWordReducer(state = initialState, action) {
   switch(action.type) {
     case 'CURRENT_WORD_PENDING':

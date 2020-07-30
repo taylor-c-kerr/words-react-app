@@ -14,8 +14,6 @@ class Word extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			isLoaded: false,
-			error: false,
 			hasBeenEdited: false,
 			word: {
 				name: '', 
@@ -39,7 +37,6 @@ class Word extends React.Component {
 		const {id} = this.props.match.params;
 		if (id === 'add' || id === undefined) {
 			this.setState({
-				isLoaded: true,
 				word: word,
 				newWord: true
 			})
@@ -51,7 +48,6 @@ class Word extends React.Component {
 			} else {
 				this._originalWord = this.props.viewedWords[id];
 				this.setState({
-					isLoaded: true,
 					word: this._originalWord,
 				})
 			}
@@ -64,7 +60,6 @@ class Word extends React.Component {
 			const word = await WordsApi.getWord(id);
 			this._originalWord = word.data;
 			this.setState({
-				isLoaded: true,
 				word: word.data,
 			})
 			this.props.addViewedWord(this._originalWord);
@@ -72,9 +67,6 @@ class Word extends React.Component {
 		}
 		catch (error) {
 			console.error(error);
-			this.setState({
-				error: true
-			})
 			this.props.currentWordError(error);
 		}
 	}
@@ -149,9 +141,6 @@ class Word extends React.Component {
 		}
 		catch (error) {
 			console.error(error);
-			this.setState({
-				error: true
-			});
 			this.props.currentWordError(error);
 		}
 	}
@@ -178,7 +167,8 @@ class Word extends React.Component {
 	}
 
 	render() {
-		const {isLoaded, isClosed, error, hasBeenEdited} = this.state;
+		const { isClosed, hasBeenEdited} = this.state;
+		const { pending, error } = this.props
 
 		if (isClosed) {
 			return <Redirect push to='/' />
@@ -186,7 +176,7 @@ class Word extends React.Component {
 		else if (error) {
 			return <Error />;
 		}
-		else if (!isLoaded) {
+		else if (pending) {
 			return <LoadingIcon />;
 
 		}
@@ -212,7 +202,9 @@ const mapStateToProps = (state) => {
 		words: state.allWordsReducer.words,
 		viewedWords: state.allWordsReducer.viewedWords,
 		currentWord: state.currentWordReducer.currentWord,
-		delete: state.deleteWordReducer
+		delete: state.deleteWordReducer,
+		pending: state.currentWordReducer.pending,
+		error: state.currentWordReducer.error,
 	}
 }
 const mapDispatchToProps = (dispatch) => {
