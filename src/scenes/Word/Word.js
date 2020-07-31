@@ -7,6 +7,7 @@ import Validate from '../../services/validation/index';
 import LoadingIcon from '../../components/LoadingIcon/LoadingIcon';
 import Error from '../../components/Error/Error';
 import { connect } from 'react-redux';
+import Button from '../../components/Button/Button';
 
 class Word extends React.Component {
 	constructor(props) {
@@ -146,11 +147,13 @@ class Word extends React.Component {
 					Definitions:{definition.map((d, i) => <Definition key={`definition-${i}`} definition={d} onDataUpdate={this.onWordEdit} number={i}/>)}
 				</div>
 				{/* blue button: */}
-				<button onClick={this.handleAddPartOfSpeech}>Add Part Of Speech<span class="material-icons">add</span></button>
+				{/* <button onClick={this.handleAddPartOfSpeech}>Add Part Of Speech<span className="material-icons">add</span></button> */}
+				<Button icon="add" text="Add Part Of Speech" onClick={this.handleAddPartOfSpeech} />
 				{/* blue button: */}
 				{isEdited ? <button onClick={this.handleSubmit}>SAVE</button> : ''}
 				{/* red button */}
-				<button onClick={this.handleClose}>Close<span class="material-icons">close</span></button>
+				{/* <button onClick={this.handleClose}>Close<span className="material-icons">close</span></button> */}
+				<Button icon="close" text="Close" onClick={this.handleClose} />
 			</div>
 		}
 	}

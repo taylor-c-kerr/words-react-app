@@ -5,9 +5,9 @@ import Tile from '../../components/Tile/Tile';
 import LoadingIcon from '../../components/LoadingIcon/LoadingIcon';
 import Error from '../../components/Error/Error';
 import './styles.scss';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import Button from '../../components/Button/Button';
 
 class Home extends React.Component {
   constructor(props) {
@@ -55,10 +55,11 @@ class Home extends React.Component {
     return (
       <div>
         {/* blue button */}
-        <button onClick={this.sendToAddPage}>
+        {/* <button onClick={this.sendToAddPage}>
           Add a new Word
           <span class="material-icons">add</span>
-        </button>
+        </button> */}
+        <Button icon="add" text="Add a new word" onClick={this.sendToAddPage.bind(this)} />
         <div className="words-container">
         {Object.keys(words).map((id, i) => <Tile name={words[id].name} definition={words[id].definition} id={words[id].id} key={`tile-${i}`} />)}
         </div>

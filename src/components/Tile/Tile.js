@@ -3,7 +3,8 @@ import { Redirect } from 'react-router-dom';
 import WordsApi from '../../services/api/WordsApi';
 import './styles.scss';
 import { connect } from 'react-redux';
-
+import Button from '../Button/Button';
+	
 class Tile extends React.Component {
 	constructor(props) {
 		super(props);
@@ -77,7 +78,8 @@ class Tile extends React.Component {
 				</div>
 
 				{/* red button with round corners */}
-				{!this.state.isDeleted ? <div><button onClick={this.handleDelete}>Delete<span class="material-icons">delete_forever</span></button></div> : null}
+				{/* {!this.state.isDeleted ? <div><button onClick={this.handleDelete}>Delete<span class="material-icons">delete_forever</span></button></div> : null} */}
+				{!this.state.isDeleted ? <Button icon="delete_forever" text="Delete" onClick={this.handleDelete}/> : ''}
 			</div>
 		)
 	}
