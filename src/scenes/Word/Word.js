@@ -3,7 +3,6 @@ import {Redirect} from 'react-router-dom';
 import _ from 'lodash';
 import WordsApi from '../../services/api/WordsApi/index';
 import Definition from '../../components/Definition/Definition';
-import Button from '../../components/Button/Button';
 import Validate from '../../services/validation/index';
 import LoadingIcon from '../../components/LoadingIcon/LoadingIcon';
 import Error from '../../components/Error/Error';
@@ -146,9 +145,12 @@ class Word extends React.Component {
 					<p className="word-name">{name}</p>
 					Definitions:{definition.map((d, i) => <Definition key={`definition-${i}`} definition={d} onDataUpdate={this.onWordEdit} number={i}/>)}
 				</div>
-				<div onClick={this.handleAddPartOfSpeech}><Button variant='primary' value='Add Part of Speech' /></div>
-				{isEdited ? <Button onClick={this.handleSubmit} value='SAVE' /> : null}
-				<div onClick={this.handleClose}><Button variant='danger' value='Close' /></div>
+				{/* blue button: */}
+				<button onClick={this.handleAddPartOfSpeech}>Add Part Of Speech</button>
+				{/* blue button: */}
+				{isEdited ? <button onClick={this.handleSubmit}>SAVE</button> : ''}
+				{/* red button */}
+				<button onClick={this.handleClose}>Close</button>
 			</div>
 		}
 	}

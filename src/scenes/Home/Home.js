@@ -2,7 +2,6 @@ import React from 'react';
 import {Redirect} from 'react-router-dom';
 import WordsApi from '../../services/api/WordsApi/index';
 import Tile from '../../components/Tile/Tile';
-import Button from '../../components/Button/Button';
 import LoadingIcon from '../../components/LoadingIcon/LoadingIcon';
 import Error from '../../components/Error/Error';
 import './styles.scss';
@@ -55,7 +54,8 @@ class Home extends React.Component {
 
     return (
       <div>
-        <div onClick={this.sendToAddPage}><Button variant='primary' value='Add a new word' /></div>
+        {/* blue button */}
+        <button onClick={this.sendToAddPage}>Add a new Word</button>
         <div className="words-container">
         {Object.keys(words).map((id, i) => <Tile name={words[id].name} definition={words[id].definition} id={words[id].id} key={`tile-${i}`} />)}
         </div>

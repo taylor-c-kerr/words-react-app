@@ -1,5 +1,4 @@
 import React from 'react';
-import Button from '../Button/Button';
 import PartOfSpeech from '../PartOfSpeech/PartOfSpeech';
 
 class Definition extends React.Component {
@@ -58,7 +57,8 @@ class Definition extends React.Component {
 			<div>
 				<PartOfSpeech value={partOfSpeech} onDataUpdate={this.onDataUpdate.bind(this)}/>
 				{ this.mapEntries(entries) }
-				<Button onClick={this.onDataUpdate.bind(this, {})} variant='primary' value='add entry' />
+				{/* blue button with round corners: */}
+				<button onClick={this.onDataUpdate.bind(this, {})}>Add Entry</button>
 			</div>
 		)
 	}

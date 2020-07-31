@@ -1,6 +1,5 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import Button from '../Button/Button';
 import WordsApi from '../../services/api/WordsApi';
 import './styles.scss';
 import { connect } from 'react-redux';
@@ -77,7 +76,8 @@ class Tile extends React.Component {
 					{definition}
 				</div>
 
-				{!this.state.isDeleted ? <div><Button variant='danger' value='Delete' onClick={this.handleDelete} /></div> : null}
+				{/* red button with round corners */}
+				{!this.state.isDeleted ? <div><button onClick={this.handleDelete}>Delete</button></div> : null}
 			</div>
 		)
 	}
