@@ -36,7 +36,6 @@ class Definition extends React.Component {
 				{`${i+1}. `}
 				<input 
 					onChange={this.onDataUpdate.bind(this, i)} 
-					type='text' 
 					value={def}
 					placeholder='Enter a new definition'
 				/>
@@ -58,7 +57,7 @@ class Definition extends React.Component {
 				<PartOfSpeech value={partOfSpeech} onDataUpdate={this.onDataUpdate.bind(this)}/>
 				{ this.mapEntries(entries) }
 				{/* blue button with round corners: */}
-				<button onClick={this.onDataUpdate.bind(this, {})}>Add Entry</button>
+				<button onClick={this.onDataUpdate.bind(this, {})}>Add Entry<span class="material-icons">add</span></button>
 			</div>
 		)
 	}

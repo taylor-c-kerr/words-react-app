@@ -55,7 +55,10 @@ class Home extends React.Component {
     return (
       <div>
         {/* blue button */}
-        <button onClick={this.sendToAddPage}>Add a new Word</button>
+        <button onClick={this.sendToAddPage}>
+          Add a new Word
+          <span class="material-icons">add</span>
+        </button>
         <div className="words-container">
         {Object.keys(words).map((id, i) => <Tile name={words[id].name} definition={words[id].definition} id={words[id].id} key={`tile-${i}`} />)}
         </div>
