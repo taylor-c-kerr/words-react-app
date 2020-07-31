@@ -2,7 +2,6 @@ import React from 'react';
 import {Redirect} from 'react-router-dom';
 import _ from 'lodash';
 import WordsApi from '../../services/api/WordsApi/index';
-import Name from '../../components/Name/Name';
 import Definition from '../../components/Definition/Definition';
 import Button from '../../components/Button/Button';
 import Validate from '../../services/validation/index';
@@ -50,7 +49,7 @@ class Word extends React.Component {
 		}
 		catch (error) {
 			console.error(error);
-			this.props.currentWordError(error);
+			this.props.currentWordError(error.response.data);
 		}
 	}
 
@@ -79,15 +78,8 @@ class Word extends React.Component {
 
 	onWordEdit(data, number=null) {
 		const editedWord = _.cloneDeep(this.props.currentWord);
-
-		// this block can probably be nixed because backend doesnt support name change
-		if (data && data.name) {
-			editedWord.name = data.name;
-		} else {
-			editedWord.definition[number] = data;
-			editedWord.category[number] = data.partOfSpeech;
-		}
-
+		editedWord.definition[number] = data;
+		editedWord.category[number] = data.partOfSpeech;
 		const isEdited = this.hasBeenEdited(this._originalWord, editedWord);
 		this.setState({ isEdited });
 		this.props.addCurrentWord(editedWord);
@@ -108,6 +100,7 @@ class Word extends React.Component {
 			}
 			this.props.addToAllWords(word);
 			this.props.addCurrentWord(word);
+			this.props.addViewedWord(word);
 
 			this.setState({
 				isSubmitted: true,
@@ -116,7 +109,7 @@ class Word extends React.Component {
 		}
 		catch (error) {
 			console.error(error);
-			this.props.currentWordError(error);
+			this.props.currentWordError(error.response.data);
 		}
 	}
 
@@ -150,7 +143,7 @@ class Word extends React.Component {
 		
 			return <div>
 				<div>
-					<Name value={name} onDataUpdate={this.onWordEdit}/>
+					<p className="word-name">{name}</p>
 					Definitions:{definition.map((d, i) => <Definition key={`definition-${i}`} definition={d} onDataUpdate={this.onWordEdit} number={i}/>)}
 				</div>
 				<div onClick={this.handleAddPartOfSpeech}><Button variant='primary' value='Add Part of Speech' /></div>
@@ -175,7 +168,7 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		addViewedWord: (viewedWord) => dispatch({ type: 'ADD_VIEWED_WORD', viewedWord }),
 		currentWordPending: () => dispatch({ type: 'CURRENT_WORD_PENDING' }),
-		currentWordError: () => dispatch({ type: 'CURRENT_WORD_ERROR' }),
+		currentWordError: (error) => dispatch({ type: 'CURRENT_WORD_ERROR', error }),
 		addCurrentWord: (currentWord) => dispatch({ type: 'CURRENT_WORD_SUCCESS', currentWord }),
 		addToAllWords: (currentWord) => dispatch({ type: 'ADD_TO_ALL_WORDS', currentWord })
 	}
