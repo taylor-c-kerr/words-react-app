@@ -14,56 +14,39 @@ class Word extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			hasBeenEdited: false,
-			word: {
-				name: '', 
-				category: [''], 
-				definition: [
-					{
-						partOfSpeech: '', 
-						entries: ['']
-					}
-				]
-			}
+			isEdited: false,
+			isClosed: false
 		}
-		this.onDataUpdate = this.onDataUpdate.bind(this);
+		this._originalWord = null;
+		this.isNewWord = null;
+		this.onWordEdit = this.onWordEdit.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
-		this.handleAdd = this.handleAdd.bind(this);
+		this.handleAddPartOfSpeech = this.handleAddPartOfSpeech.bind(this);
 		this.handleClose = this.handleClose.bind(this);
 	}
 
 	async componentDidMount() {
-		const {word} = this.state
-		const {id} = this.props.match.params;
+		const { id } = this.props.match.params;
 		if (id === 'add' || id === undefined) {
-			this.setState({
-				word: word,
-				newWord: true
-			})
-			this._originalWord = word;
+			this.isNewWord = true;
 		}
 		else {
 			if (!this.props.viewedWords[id]) {
 				await this.getWord(id);
+				this.props.addViewedWord(this._originalWord);
 			} else {
-				this._originalWord = this.props.viewedWords[id];
-				this.setState({
-					word: this._originalWord,
-				})
+				this._originalWord = _.cloneDeep(this.props.viewedWords[id]);
 			}
+			this.props.addCurrentWord(this._originalWord);
 		}
+		this._originalWord = this.props.currentWord;
 	}
 
 	async getWord(id) {
 		try {
 			this.props.currentWordPending();
 			const word = await WordsApi.getWord(id);
-			this._originalWord = word.data;
-			this.setState({
-				word: word.data,
-			})
-			this.props.addViewedWord(this._originalWord);
-			this.props.addCurrentWord(this._originalWord);
+			this._originalWord = _.cloneDeep(word.data);
 		}
 		catch (error) {
 			console.error(error);
@@ -94,37 +77,29 @@ class Word extends React.Component {
 		return !_.isEqual(previous, copy)
 	}
 
-	// what does this do?
-	onDataUpdate(data, number=null) {
-		this.setState(prevState => {
-			let updatedWord = Object.assign({}, prevState.word);
+	onWordEdit(data, number=null) {
+		const editedWord = _.cloneDeep(this.props.currentWord);
 
-			if (data.hasOwnProperty('name')) {
-				updatedWord.name = data.name;
-			}
-			else {
-				let definitionClone = [...updatedWord.definition];  // array of definition objects: {partOfSpeech, entries}
-				definitionClone[number] = data;
-				updatedWord.definition = definitionClone;
-				updatedWord.category[number] = data.partOfSpeech;
-			}
+		// this block can probably be nixed because backend doesnt support name change
+		if (data && data.name) {
+			editedWord.name = data.name;
+		} else {
+			editedWord.definition[number] = data;
+			editedWord.category[number] = data.partOfSpeech;
+		}
 
-			const hasBeenEdited = this.hasBeenEdited(this._originalWord, updatedWord);
-
-			return {
-				word: updatedWord,
-				hasBeenEdited: hasBeenEdited
-			}
-		})
+		const isEdited = this.hasBeenEdited(this._originalWord, editedWord);
+		this.setState({ isEdited });
+		this.props.addCurrentWord(editedWord);
 	}
 
 	async handleSubmit(e) {
-		let {word, newWord} = this.state;
+		let word = _.cloneDeep(this.props.currentWord);
 
 		try {
 			word = Validate.form(word);
 			this.props.currentWordPending();
-			if (newWord) {
+			if (this.isNewWord) {
 				await WordsApi.postWord(word);
 				this.props.addCurrentWord(word);
 			}
@@ -136,7 +111,7 @@ class Word extends React.Component {
 
 			this.setState({
 				isSubmitted: true,
-				hasBeenEdited: false
+				isEdited: false
 			})
 		}
 		catch (error) {
@@ -151,46 +126,35 @@ class Word extends React.Component {
 		this.props.addCurrentWord({});
 	}
 
-	// what is this method?
-	handleAdd() {
-		this.setState(prevState => {
-			const {word} = prevState;
-			const {definition} = word;
-			const blankDefinition = {partOfSpeech: '', entries: ['']};
-
-			definition.push(blankDefinition);
-
-			return {
-				definition: definition
-			}
-		})
+	handleAddPartOfSpeech() {
+		const editedWord = _.cloneDeep(this.props.currentWord);
+		editedWord.definition.push({ partOfSpeech: '', entries: [''] });
+		this.props.addCurrentWord(editedWord);
 	}
 
 	render() {
-		const { isClosed, hasBeenEdited} = this.state;
+		const { isClosed, isEdited } = this.state;
 		const { pending, error } = this.props
 
 		if (isClosed) {
 			return <Redirect push to='/' />
-		}
-		else if (error) {
+		} else if (error) {
 			return <Error />;
-		}
-		else if (pending) {
-			return <LoadingIcon />;
-
-		}
-		else {
-			const {word}  = this.state;
+		} else {
+			const word = this.props.currentWord;
 			const {name, definition} = word;
+
+			if (pending || !name || !definition) {
+				return <LoadingIcon />;
+			}
 		
 			return <div>
 				<div>
-					<Name value={name} onDataUpdate={this.onDataUpdate}/>
-					{definition.map((d, i) => <Definition key={`definition-${i}`} definition={d} onDataUpdate={this.onDataUpdate} number={i}/>)}
+					<Name value={name} onDataUpdate={this.onWordEdit}/>
+					Definitions:{definition.map((d, i) => <Definition key={`definition-${i}`} definition={d} onDataUpdate={this.onWordEdit} number={i}/>)}
 				</div>
-				<div onClick={this.handleAdd}><Button variant='primary' value='Add Part of Speech' /></div>
-				{hasBeenEdited ? <Button onClick={this.handleSubmit} value='SAVE' /> : null}
+				<div onClick={this.handleAddPartOfSpeech}><Button variant='primary' value='Add Part of Speech' /></div>
+				{isEdited ? <Button onClick={this.handleSubmit} value='SAVE' /> : null}
 				<div onClick={this.handleClose}><Button variant='danger' value='Close' /></div>
 			</div>
 		}

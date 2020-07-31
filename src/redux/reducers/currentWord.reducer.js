@@ -1,5 +1,14 @@
 const initialState = {
-  currentWord: {},
+  currentWord: {
+    name: '', 
+    category: [''], 
+    definition: [
+      {
+        partOfSpeech: '', 
+        entries: ['']
+      }
+    ]
+  },
   pending: false,
   error: null,
 };
