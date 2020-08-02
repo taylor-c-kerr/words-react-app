@@ -146,14 +146,9 @@ class Word extends React.Component {
 					<p className="word-name">{name}</p>
 					Definitions:{definition.map((d, i) => <Definition key={`definition-${i}`} definition={d} onDataUpdate={this.onWordEdit} number={i}/>)}
 				</div>
-				{/* blue button: */}
-				{/* <button onClick={this.handleAddPartOfSpeech}>Add Part Of Speech<span className="material-icons">add</span></button> */}
-				<Button icon="add" text="Add Part Of Speech" onClick={this.handleAddPartOfSpeech} />
-				{/* blue button: */}
+				<Button icon="add" text="Add Part Of Speech" clickHandler={this.handleAddPartOfSpeech} />
 				{isEdited ? <button onClick={this.handleSubmit}>SAVE</button> : ''}
-				{/* red button */}
-				{/* <button onClick={this.handleClose}>Close<span className="material-icons">close</span></button> */}
-				<Button icon="close" text="Close" onClick={this.handleClose} />
+				<Button icon="close" text="Close" clickHandler={this.handleClose} />
 			</div>
 		}
 	}

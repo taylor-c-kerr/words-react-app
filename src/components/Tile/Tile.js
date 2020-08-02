@@ -79,7 +79,7 @@ class Tile extends React.Component {
 
 				{/* red button with round corners */}
 				{/* {!this.state.isDeleted ? <div><button onClick={this.handleDelete}>Delete<span class="material-icons">delete_forever</span></button></div> : null} */}
-				{!this.state.isDeleted ? <Button icon="delete_forever" text="Delete" onClick={this.handleDelete}/> : ''}
+				{!this.state.isDeleted ? <Button icon="delete_forever" text="Delete" clickHandler={this.handleDelete}/> : ''}
 			</div>
 		)
 	}

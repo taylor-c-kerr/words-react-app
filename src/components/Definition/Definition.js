@@ -59,7 +59,7 @@ class Definition extends React.Component {
 				{ this.mapEntries(entries) }
 				{/* blue button with round corners: */}
 				{/* <button onClick={this.onDataUpdate.bind(this, {})}>Add Entry<span class="material-icons">add</span></button> */}
-				<Button icon="add" text="Add Entry" onClick={this.onDataUpdate.bind(this, {})}/>
+				<Button icon="add" text="Add Entry" clickHandler={this.onDataUpdate.bind(this, {})}/>
 			</div>
 		)
 	}
