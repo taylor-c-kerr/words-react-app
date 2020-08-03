@@ -4,9 +4,27 @@ import WordsApi from '../../services/api/WordsApi';
 import './styles.scss';
 import { connect } from 'react-redux';
 import Button from '../Button/Button';
-	
-class Tile extends React.Component {
-	constructor(props) {
+import PropTypes from 'prop-types';
+
+const TilePropTypes = {
+	id: PropTypes,
+	deleteWordPending: PropTypes.func.isRequired,
+	deleteWordSuccess: PropTypes.func.isRequired,
+	deleteWord: PropTypes.func.isRequired,
+	deleteWordError: PropTypes.func.isRequired,
+	definition: PropTypes.object.isRequired,
+	name: PropTypes.string.isRequired,
+	viewedWords: PropTypes.any,
+};
+type Props = PropTypes.InferProps<typeof TilePropTypes>
+type State = {
+  isClicked: boolean,
+  isDeleted: boolean
+}
+
+class Tile extends React.Component<Props, State> {
+  static propTypes: {};
+  constructor(props: Props) {
 		super(props);
 		this.state = {
 			isClicked: false,
@@ -18,11 +36,11 @@ class Tile extends React.Component {
 		this.handleDelete = this.handleDelete.bind(this);
 	}
 
-	handleClick(e) {
+	handleClick() {
 		this.setState({isClicked: true});
 	}
 
-	markAsDeleted(isDeletedFromChild) {
+	markAsDeleted(isDeletedFromChild: boolean) {
 		if (isDeletedFromChild) {
 			this.setState({isDeleted: true});
 		}
@@ -48,12 +66,12 @@ class Tile extends React.Component {
 		}
 	}
 
-	renderDefinition(definition) {
-		return definition.map((def, i) => {
+	renderDefinition(definition: any) {
+		return definition.map((def: any, i: number) => {
 			const {partOfSpeech, entries} = def;
 			return <div key={`definition-${i}`}>
 				<div className='partOfSpeech'>{partOfSpeech}</div>
-				{entries.map((entry , ei) => {
+				{entries.map((entry: any, ei: number) => {
 					return <div className='entry' key={`entry-${i}-${ei}`}>{ei + 1}. {entry}</div>
 				})}
 			</div>
@@ -85,24 +103,20 @@ class Tile extends React.Component {
 	}
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: any) => {
   return { 
 		words: state.allWordsReducer.words,
 		viewedWords: state.allWordsReducer.viewedWords,
 		delete: state.deleteWordReducer
 	}
 }
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch: any) => {
 	return {
     deleteWordPending: () => dispatch({ type: 'DELETE_WORD_PENDING' }),
-    deleteWordSuccess: (words) => dispatch({ type: 'DELETE_WORD_SUCCESS', words }),
-		deleteWordError: (error) => dispatch({ type: 'DELETE_WORD', error }),
-		deleteWord: (id) => dispatch({ type: 'DELETE_WORD', id }),
-		addViewedWord: (viewedWord) => {
-			if (!this.props.viewedWords.find(word => word.id === viewedWord.id)) {
-				dispatch({ type: 'ADD_VIEWED_WORD', viewedWord});
-			}
-		}
+    deleteWordSuccess: (words: any) => dispatch({ type: 'DELETE_WORD_SUCCESS', words }),
+		deleteWordError: (error: any) => dispatch({ type: 'DELETE_WORD', error }),
+		deleteWord: (id: any) => dispatch({ type: 'DELETE_WORD', id }),
+		addViewedWord: (viewedWord: any) => dispatch({ type: 'ADD_VIEWED_WORD', viewedWord}),
 	}
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Tile);

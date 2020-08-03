@@ -16,12 +16,11 @@ const HomePropTypes = {
   setPending: PropTypes.func.isRequired,
   addWords: PropTypes.func.isRequired,
   setError: PropTypes.func.isRequired,
-  words: PropTypes.object,
+  words: PropTypes.any
 }
 
 type Props = PropTypes.InferProps<typeof HomePropTypes>
 type State = {
-  isLoaded: boolean,
   addWordClicked: boolean
 }
 
@@ -29,9 +28,7 @@ class Home extends React.Component<Props, State> {
   static propTypes: {};
   constructor(props: Props) {
     super(props);
-    console.log(this);
     this.state = {
-      isLoaded: false,
       addWordClicked: false
     };
 
@@ -75,7 +72,7 @@ class Home extends React.Component<Props, State> {
       <div className="home-container">
         <Button icon="add" text="Add a new word" clickHandler={this.sendToAddPage.bind(this)} />
         <div className="words-container">
-        {Object.keys(words).map((id, i) => <Tile name={words[id].name} definition={words[id].definition} id={words[id].id} key={`tile-${i}`} />)}
+        {!words ? null : Object.keys(words).map((id, i) => <Tile name={words[id].name} definition={words[id].definition} id={words[id].id} key={`tile-${i}`} />)}
         </div>
       </div>
     );
@@ -84,7 +81,7 @@ class Home extends React.Component<Props, State> {
 }
 
 const mapStateToProps = (state: any) => {
-  const { words, pending, error } = state;
+  const { words, pending, error } = state.allWordsReducer;
   return { 
     words,
     pending,

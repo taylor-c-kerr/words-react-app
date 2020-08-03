@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 const initialState = {
   pending: false,
   words: {},
@@ -13,14 +15,15 @@ export function allWordsReducer(state = initialState, action) {
         pending: true
       }
     case 'FETCH_WORDS_SUCCESS':
+      const words = _.cloneDeep(action.words);
       return {
         ...state,
         pending: false,
-        words: action.words
-      }
+        words
+      };
     case 'ADD_TO_ALL_WORDS':
       const word = {};
-      word[action.currentWord.id] = action.currentWord;
+      word[action.currentWord.id] = _.cloneDeep(action.currentWord);
       return {
         ...state,
         pending: false,

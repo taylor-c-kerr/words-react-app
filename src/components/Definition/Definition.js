@@ -9,7 +9,7 @@ class Definition extends React.Component {
 
 		if (typeof data === 'number') {
 			// update entry
-			const {value, type} = e.target
+			const {value} = e.target
 			const entries = [...definition.entries];
 			entries[data] = value;
 			definition.entries = entries;
