@@ -33,6 +33,12 @@
 	.partOfSpeech {
 		font-style: italic;
 	}
+
+	.buttons-container {
+		width: 100%;
+		display: flex;
+		justify-content: flex-end;
+	}
 }
 
 .deletedTile {
