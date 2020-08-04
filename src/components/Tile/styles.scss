@@ -9,12 +9,15 @@
 	min-width: 30%;
 	display: flex;
 	flex-direction: column;
-	justify-content: space-between;
+	align-items: center;
 
 	.definition {
 		max-height: 144px;
 		min-height: 144px;
 		overflow: scroll;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 	}
 
 	&:hover {
@@ -25,6 +28,10 @@
 		font-size: 30px;
 		background: lightgrey;
 		border-radius: 15px;
+	}
+
+	.partOfSpeech {
+		font-style: italic;
 	}
 }
 

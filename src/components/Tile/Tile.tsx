@@ -89,14 +89,9 @@ class Tile extends React.Component<Props, State> {
 		return (
 			<div className={isDeleted ? 'deletedTile' : 'tile'}>
 				<div className='definition' onClick={this.handleClick}>
-					<div className='name'>
-						{this.props.name}
-					</div>
+					<div className='name'>{this.props.name}</div>
 					{definition}
 				</div>
-
-				{/* red button with round corners */}
-				{/* {!this.state.isDeleted ? <div><button onClick={this.handleDelete}>Delete<span class="material-icons">delete_forever</span></button></div> : null} */}
 				{!this.state.isDeleted ? <Button icon="delete_forever" text="Delete" clickHandler={this.handleDelete}/> : ''}
 			</div>
 		)
