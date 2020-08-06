@@ -1,5 +1,5 @@
 import React from 'react';
-import PartOfSpeech from '../PartOfSpeech/PartOfSpeech';
+import PartOfSpeech from '../PartOfSpeech/PartOfSpeech.tsx';
 import Button from '../Button/Button';
 
 class Definition extends React.Component {
@@ -55,10 +55,9 @@ class Definition extends React.Component {
 
 		return (
 			<div>
-				<PartOfSpeech value={partOfSpeech} onDataUpdate={this.onDataUpdate.bind(this)}/>
+				{/* <PartOfSpeech value={partOfSpeech} onDataUpdate={this.onDataUpdate.bind(this)}/> */}
+				<PartOfSpeech value={partOfSpeech} />
 				{ this.mapEntries(entries) }
-				{/* blue button with round corners: */}
-				{/* <button onClick={this.onDataUpdate.bind(this, {})}>Add Entry<span class="material-icons">add</span></button> */}
 				<Button icon="add" text="Add Entry" clickHandler={this.onDataUpdate.bind(this, {})}/>
 			</div>
 		)

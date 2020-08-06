@@ -8,6 +8,7 @@ import LoadingIcon from '../../components/LoadingIcon/LoadingIcon';
 import Error from '../../components/Error/Error';
 import { connect } from 'react-redux';
 import Button from '../../components/Button/Button';
+import PartOfSpeech from '../../components/PartOfSpeech/PartOfSpeech.tsx'
 
 class Word extends React.Component {
 	constructor(props) {

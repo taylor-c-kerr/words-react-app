@@ -1,3 +1,4 @@
+import _ from 'lodash';
 const initialState = {
   currentWord: {
     name: '', 
@@ -7,8 +8,9 @@ const initialState = {
         partOfSpeech: '', 
         entries: ['']
       }
-    ]
+    ],
   },
+  availablePartsOfSpeech: ['noun', 'verb', 'adjective', 'adverb', 'preposition'],
   pending: false,
   error: null,
 };
@@ -24,14 +26,31 @@ export function currentWordReducer(state = initialState, action) {
       return {
         ...state,
         pending: false,
-        currentWord: action.currentWord
+        currentWord: action.currentWord,
       };
     case 'CURRENT_WORD_ERROR':
       return {
         ...state,
         pending: false,
-        error: action.error
+        error: action.error,
       };
+    case 'ADD_AVAILABLE_POS':
+      if (state.availablePartsOfSpeech.includes(action.pos)) {
+        console.warn('errrr, part of speech already included')
+        return { ...state }
+      }
+      const addedPos = [...state.availablePartsOfSpeech];
+      addedPos.push(action.pos);
+      return {
+        ...state,
+        availablePartsOfSpeech: addedPos,
+      }
+    case 'REMOVE_AVAILABLE_POS':
+      console.log(_.difference(state.availablePartsOfSpeech, action.pos))
+      return {
+        ...state,
+        availablePartsOfSpeech: _.difference(state.availablePartsOfSpeech, action.pos),
+      }
     default:
       return state;
   }
