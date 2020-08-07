@@ -1,13 +1,24 @@
 import React from 'react';
-import PartOfSpeech from '../PartOfSpeech/PartOfSpeech.tsx';
+import PropTypes from 'prop-types';
+import PartOfSpeech from '../PartOfSpeech/PartOfSpeech';
 import Button from '../Button/Button';
+import { cloneDeep } from 'lodash';
 
-class Definition extends React.Component {
-	onDataUpdate(data, e) {
-		console.log(data)
+const DefinitionPropTypes = {
+  definition: PropTypes.any.isRequired,
+  number: PropTypes.any.isRequired,
+  onDataUpdate: PropTypes.any.isRequired,
+}
+
+type Props = PropTypes.InferProps<typeof DefinitionPropTypes>;
+class Definition extends React.Component<Props> {
+  static propTypes: {};
+
+  onDataUpdate(data: any, e: any) {
+    console.log(data, e);
 		let {definition, number} = this.props;
-		definition = Object.assign({}, definition);
-
+    definition = cloneDeep(definition);
+    
 		if (typeof data === 'number') {
 			// update entry
 			const {value} = e.target
@@ -30,9 +41,9 @@ class Definition extends React.Component {
 		// definition.number = number;
 
 		this.props.onDataUpdate(definition, number);
-	}
+  }
 
-	mapEntries = (entries) => {
+	mapEntries(entries: Array<any>) {
 		return entries.map((def, i) => {
 			return <div key={`entry-${i}`}>
 				{`${i+1}. `}
@@ -63,5 +74,7 @@ class Definition extends React.Component {
 		)
 	}
 }
+
+Definition.propTypes = DefinitionPropTypes;
 
 export default Definition;

@@ -2,13 +2,12 @@ import React from 'react';
 import {Redirect} from 'react-router-dom';
 import _ from 'lodash';
 import WordsApi from '../../services/api/WordsApi/index';
-import Definition from '../../components/Definition/Definition';
+import Definition from '../../components/Definition/Definition.tsx';
 import Validate from '../../services/validation/index';
 import LoadingIcon from '../../components/LoadingIcon/LoadingIcon';
 import Error from '../../components/Error/Error';
 import { connect } from 'react-redux';
 import Button from '../../components/Button/Button';
-import PartOfSpeech from '../../components/PartOfSpeech/PartOfSpeech.tsx'
 
 class Word extends React.Component {
 	constructor(props) {
