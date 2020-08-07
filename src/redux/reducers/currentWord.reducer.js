@@ -50,6 +50,12 @@ export function currentWordReducer(state = initialState, action) {
         ...state,
         availablePartsOfSpeech: _.difference(state.availablePartsOfSpeech, action.pos),
       }
+    case 'SET_AVAILABLE_POS':
+      const setAvailableTo = _.difference(initialState.availablePartsOfSpeech, action.pos)
+      return {
+        ...state,
+        availablePartsOfSpeech: setAvailableTo,
+      }
     default:
       return state;
   }

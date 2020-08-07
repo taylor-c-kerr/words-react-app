@@ -29,7 +29,6 @@ class PartOfSpeech extends React.Component<Props> {
 
   setCurrentDefinition() {
     this.currentDefinition = cloneDeep(this.props.currentWord.definition.find((def: any) => def.partOfSpeech === this.props.value));
-    console.log(this.currentDefinition);
   }
 
   getUsedPos() {
