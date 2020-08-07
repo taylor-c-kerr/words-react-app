@@ -4,6 +4,7 @@ import Button from '../Button/Button';
 
 class Definition extends React.Component {
 	onDataUpdate(data, e) {
+		console.log(data)
 		let {definition, number} = this.props;
 		definition = Object.assign({}, definition);
 
@@ -55,8 +56,7 @@ class Definition extends React.Component {
 
 		return (
 			<div>
-				{/* <PartOfSpeech value={partOfSpeech} onDataUpdate={this.onDataUpdate.bind(this)}/> */}
-				<PartOfSpeech value={partOfSpeech} />
+				<PartOfSpeech value={partOfSpeech} onOptionChange={this.onDataUpdate.bind(this)} />
 				{ this.mapEntries(entries) }
 				<Button icon="add" text="Add Entry" clickHandler={this.onDataUpdate.bind(this, {})}/>
 			</div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { cloneDeep } from 'lodash';
 
 const PartOfSpeechPropTypes = {
   availablePartsOfSpeech: PropTypes.array.isRequired,
@@ -8,11 +9,13 @@ const PartOfSpeechPropTypes = {
   removeAvailablePos: PropTypes.func.isRequired,
   currentWord: PropTypes.any.isRequired,
   value: PropTypes.string.isRequired,
+  onOptionChange: PropTypes.func.isRequired,
 }
 type Props = PropTypes.InferProps<typeof PartOfSpeechPropTypes>
 
 class PartOfSpeech extends React.Component<Props> {
   static propTypes: {};
+  private currentDefinition: any;
   constructor(props: Props) {
     super(props);
     this.handleOptionChange = this.handleOptionChange.bind(this);
@@ -21,6 +24,12 @@ class PartOfSpeech extends React.Component<Props> {
   componentDidMount() {
     const usedPos = this.getUsedPos();
     this.props.removeAvailablePos(usedPos);
+    this.setCurrentDefinition();
+  }
+
+  setCurrentDefinition() {
+    this.currentDefinition = cloneDeep(this.props.currentWord.definition.find((def: any) => def.partOfSpeech === this.props.value));
+    console.log(this.currentDefinition);
   }
 
   getUsedPos() {
@@ -28,8 +37,7 @@ class PartOfSpeech extends React.Component<Props> {
   }
 
   handleOptionChange(e: any) {
-    console.log('click!', e.target.value)
-    this.props.removeAvailablePos([e.target.value])
+    this.props.onOptionChange({partOfSpeech: e.target.value});
   }
 
   render() {
