@@ -46,7 +46,6 @@ export function currentWordReducer(state = initialState, action) {
         availablePartsOfSpeech: addedPos,
       }
     case 'REMOVE_AVAILABLE_POS':
-      console.log(_.difference(state.availablePartsOfSpeech, action.pos))
       return {
         ...state,
         availablePartsOfSpeech: _.difference(state.availablePartsOfSpeech, action.pos),

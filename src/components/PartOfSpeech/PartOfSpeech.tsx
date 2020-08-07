@@ -7,7 +7,7 @@ const PartOfSpeechPropTypes = {
   addAvailablePos: PropTypes.func.isRequired,
   removeAvailablePos: PropTypes.func.isRequired,
   currentWord: PropTypes.any.isRequired,
-  currentValue: PropTypes.string,
+  value: PropTypes.string.isRequired,
 }
 type Props = PropTypes.InferProps<typeof PartOfSpeechPropTypes>
 
@@ -33,11 +33,14 @@ class PartOfSpeech extends React.Component<Props> {
   }
 
   render() {
-    const { availablePartsOfSpeech } = this.props;
+    let { availablePartsOfSpeech, value } = this.props;
+    availablePartsOfSpeech = [...availablePartsOfSpeech]
+    availablePartsOfSpeech.push(value);
     return (
       <div>
         <div>Choose a part of speech</div>
-        <select onChange={this.handleOptionChange}>
+        <div>{value}</div>
+        <select onChange={this.handleOptionChange} value={value}>
           <option value="">--</option>
           {!availablePartsOfSpeech.length ? '' : availablePartsOfSpeech.map((pos, i) => <option value={pos} key={`pos-${i + 1}`}>{pos}</option>)}
         </select>
