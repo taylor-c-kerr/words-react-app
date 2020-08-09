@@ -56,6 +56,11 @@ export function currentWordReducer(state = initialState, action) {
         ...state,
         availablePartsOfSpeech: setAvailableTo,
       }
+    case 'SET_DEFAULT_WORD':
+      return {
+        ...state,
+        currentWord: initialState.currentWord,
+      }
     default:
       return state;
   }

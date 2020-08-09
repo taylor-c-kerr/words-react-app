@@ -28,6 +28,7 @@ class Word extends React.Component {
 		const { id } = this.props.match.params;
 		if (id === 'add' || id === undefined) {
 			this.isNewWord = true;
+			this.props.setDefaultWord();
 		}
 		else {
 			if (!this.props.viewedWords[id]) {
@@ -138,7 +139,7 @@ class Word extends React.Component {
 			const word = this.props.currentWord;
 			const {name, definition} = word;
 
-			if (pending || !name || !definition) {
+			if (pending || name === undefined || definition === undefined) {
 				return <LoadingIcon />;
 			}
 		
@@ -173,6 +174,7 @@ const mapDispatchToProps = (dispatch) => {
 		addCurrentWord: (currentWord) => dispatch({ type: 'CURRENT_WORD_SUCCESS', currentWord }),
 		addToAllWords: (currentWord) => dispatch({ type: 'ADD_TO_ALL_WORDS', currentWord }),
 		setAvailablePos: (pos) => dispatch({ type: 'SET_AVAILABLE_POS', pos }),
+		setDefaultWord: () => dispatch({ type: 'SET_DEFAULT_WORD' }),
 	}
 }
 
