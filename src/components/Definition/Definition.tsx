@@ -15,7 +15,6 @@ class Definition extends React.Component<Props> {
   static propTypes: {};
 
   onDataUpdate(data: any, e: any) {
-    console.log(data, e);
 		let {definition, number} = this.props;
     definition = cloneDeep(definition);
     

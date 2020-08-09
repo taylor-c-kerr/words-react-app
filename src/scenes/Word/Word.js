@@ -23,6 +23,7 @@ class Word extends React.Component {
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleAddPartOfSpeech = this.handleAddPartOfSpeech.bind(this);
 		this.handleClose = this.handleClose.bind(this);
+		this.onNameChange = this.onNameChange.bind(this);
 	}
 
 	async componentDidMount() {
@@ -78,17 +79,27 @@ class Word extends React.Component {
 		return !_.isEqual(previous, copy)
 	}
 
+	onNameChange(e) {
+		const name = e.target.value;
+		this.onWordEdit({name})
+	}
+
 	onWordEdit(data, number=null) {
 		const editedWord = _.cloneDeep(this.props.currentWord);
-		editedWord.definition[number] = data;
-		editedWord.category[number] = data.partOfSpeech;
+		if (data.name) {
+			editedWord.name = data.name
+		}
+		if (data.partOfSpeech || data.entries) {
+			editedWord.definition[number] = data;
+			editedWord.category[number] = data.partOfSpeech;
+		}
 		const isEdited = this.hasBeenEdited(this._originalWord, editedWord);
 		this.setState({ isEdited });
 		this.props.addCurrentWord(editedWord);
 		this.props.setAvailablePos(editedWord.definition.map(def => def.partOfSpeech));
 	}
 
-	async handleSubmit(e) {
+	async handleSubmit() {
 		let word = _.cloneDeep(this.props.currentWord);
 
 		try {
@@ -145,7 +156,7 @@ class Word extends React.Component {
 			}
 		
 			return <div className="word">
-				{this.state.isNewWord ? <input placeholder="Enter a name..."></input> : <p className="word-name">{name}</p>}
+				{this.state.isNewWord ? <input placeholder="Enter a name..." onChange={this.onNameChange}></input> : <p className="word-name">{name}</p>}
 				Definitions:{definition.map((d, i) => <Definition key={`definition-${i}`} definition={d} onDataUpdate={this.onWordEdit} number={i}/>)}
 				<Button icon="add" text="Add Part Of Speech" clickHandler={this.handleAddPartOfSpeech} />
 				{isEdited ? <button onClick={this.handleSubmit}>SAVE</button> : ''}
