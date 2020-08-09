@@ -8,16 +8,17 @@ import LoadingIcon from '../../components/LoadingIcon/LoadingIcon';
 import Error from '../../components/Error/Error';
 import { connect } from 'react-redux';
 import Button from '../../components/Button/Button';
+import './word.scss';
 
 class Word extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			isEdited: false,
-			isClosed: false
+			isClosed: false,
+			isNewWord: false,
 		}
 		this._originalWord = null;
-		this.isNewWord = null;
 		this.onWordEdit = this.onWordEdit.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleAddPartOfSpeech = this.handleAddPartOfSpeech.bind(this);
@@ -27,7 +28,7 @@ class Word extends React.Component {
 	async componentDidMount() {
 		const { id } = this.props.match.params;
 		if (id === 'add' || id === undefined) {
-			this.isNewWord = true;
+			this.setState({ isNewWord: true })
 			this.props.setDefaultWord();
 		}
 		else {
@@ -93,7 +94,7 @@ class Word extends React.Component {
 		try {
 			word = Validate.form(word);
 			this.props.currentWordPending();
-			if (this.isNewWord) {
+			if (this.state.isNewWord) {
 				await WordsApi.postWord(word);
 				this.props.addCurrentWord(word);
 			}
@@ -143,11 +144,9 @@ class Word extends React.Component {
 				return <LoadingIcon />;
 			}
 		
-			return <div>
-				<div>
-					<p className="word-name">{name}</p>
-					Definitions:{definition.map((d, i) => <Definition key={`definition-${i}`} definition={d} onDataUpdate={this.onWordEdit} number={i}/>)}
-				</div>
+			return <div className="word">
+				{this.state.isNewWord ? <input placeholder="Enter a name..."></input> : <p className="word-name">{name}</p>}
+				Definitions:{definition.map((d, i) => <Definition key={`definition-${i}`} definition={d} onDataUpdate={this.onWordEdit} number={i}/>)}
 				<Button icon="add" text="Add Part Of Speech" clickHandler={this.handleAddPartOfSpeech} />
 				{isEdited ? <button onClick={this.handleSubmit}>SAVE</button> : ''}
 				<Button icon="close" text="Close" clickHandler={this.handleClose} />
