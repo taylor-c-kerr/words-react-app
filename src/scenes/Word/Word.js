@@ -140,7 +140,7 @@ class Word extends React.Component {
 	}
 
 	render() {
-		const { isClosed, isEdited } = this.state;
+		const { isClosed, isEdited, isNewWord } = this.state;
 		const { pending, error } = this.props
 
 		if (isClosed) {
@@ -156,8 +156,8 @@ class Word extends React.Component {
 			}
 		
 			return <div className="word">
-				{this.state.isNewWord ? <input placeholder="Enter a name..." onChange={this.onNameChange}></input> : <p className="word-name">{name}</p>}
-				Definitions:{definition.map((d, i) => <Definition key={`definition-${i}`} definition={d} onDataUpdate={this.onWordEdit} number={i}/>)}
+				{isNewWord ? <input placeholder="Enter a name..." onChange={this.onNameChange}></input> : <p className="word-name">{name}</p>}
+				Definitions:{definition.map((d, i) => <Definition key={`definition-${i}`} definition={d} onDataUpdate={this.onWordEdit} number={i} isNewWord={isNewWord}/>)}
 				<Button icon="add" text="Add Part Of Speech" clickHandler={this.handleAddPartOfSpeech} />
 				{isEdited ? <button onClick={this.handleSubmit}>SAVE</button> : ''}
 				<Button icon="close" text="Close" clickHandler={this.handleClose} />

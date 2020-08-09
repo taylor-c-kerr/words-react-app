@@ -10,6 +10,7 @@ const PartOfSpeechPropTypes = {
   currentWord: PropTypes.any.isRequired,
   value: PropTypes.string.isRequired,
   onOptionChange: PropTypes.func.isRequired,
+  isNewWord: PropTypes.bool.isRequired,
 }
 type Props = PropTypes.InferProps<typeof PartOfSpeechPropTypes>
 
@@ -40,18 +41,22 @@ class PartOfSpeech extends React.Component<Props> {
   }
 
   render() {
-    let { availablePartsOfSpeech, value } = this.props;
+    let { availablePartsOfSpeech, value, isNewWord } = this.props;
     availablePartsOfSpeech = [...availablePartsOfSpeech]
     availablePartsOfSpeech.push(value);
-    return (
-      <div>
+
+    if (isNewWord) {
+      return <div>
         <div>Choose a part of speech</div>
-        <div>{value}</div>
         <select onChange={this.handleOptionChange} value={value}>
           <option value="">--</option>
           {!availablePartsOfSpeech.length ? '' : availablePartsOfSpeech.map((pos, i) => <option value={pos} key={`pos-${i + 1}`}>{pos}</option>)}
         </select>
       </div>
+    }
+
+    return (
+      <div>{value}</div>
     )
   }
 
@@ -70,7 +75,6 @@ const mapDispatchToProps = (dispatch: any) => {
   return {
     addAvailablePos: (pos: string) => dispatch({ type: 'ADD_AVAILABLE_POS', pos}),
     removeAvailablePos: (pos: string) => dispatch({ type: 'REMOVE_AVAILABLE_POS', pos}),
-		// deleteWordError: (error: any) => dispatch({ type: 'DELETE_WORD', error }),
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(PartOfSpeech);

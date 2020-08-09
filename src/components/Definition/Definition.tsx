@@ -3,11 +3,13 @@ import PropTypes from 'prop-types';
 import PartOfSpeech from '../PartOfSpeech/PartOfSpeech';
 import Button from '../Button/Button';
 import { cloneDeep } from 'lodash';
+import './definition.scss';
 
 const DefinitionPropTypes = {
   definition: PropTypes.any.isRequired,
   number: PropTypes.any.isRequired,
-  onDataUpdate: PropTypes.any.isRequired,
+	onDataUpdate: PropTypes.any.isRequired,
+	isNewWord: PropTypes.bool.isRequired,
 }
 
 type Props = PropTypes.InferProps<typeof DefinitionPropTypes>;
@@ -61,12 +63,12 @@ class Definition extends React.Component<Props> {
 			return <div>LOADING...</div>
 		}
 
-		const {definition} = this.props;
-		const {partOfSpeech, entries} = definition;
+		const { definition, isNewWord } = this.props;
+		const { partOfSpeech, entries } = definition;
 
 		return (
-			<div>
-				<PartOfSpeech value={partOfSpeech} onOptionChange={this.onDataUpdate.bind(this)} />
+			<div className="definition">
+				<PartOfSpeech value={partOfSpeech} onOptionChange={this.onDataUpdate.bind(this)} isNewWord={isNewWord} />
 				{ this.mapEntries(entries) }
 				<Button icon="add" text="Add Entry" clickHandler={this.onDataUpdate.bind(this, {})}/>
 			</div>
