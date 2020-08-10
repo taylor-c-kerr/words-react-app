@@ -6,7 +6,8 @@ import { connect } from 'react-redux';
 
 class Header extends React.Component {
 	onClick() {
-		this.props.addCurrentWord({})
+		this.props.addCurrentWord({});
+		this.props.resetAvailablePos();
 	}
 	render() {
 		return (
@@ -23,6 +24,7 @@ class Header extends React.Component {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		addCurrentWord: (currentWord) => dispatch({ type: 'CURRENT_WORD_SUCCESS', currentWord }),
+		resetAvailablePos: () => dispatch({ type: 'RESET_AVAILABLE_POS' }),
 	}
 }
 

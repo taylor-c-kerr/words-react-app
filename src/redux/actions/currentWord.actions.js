@@ -3,7 +3,7 @@ const CURRENT_WORD_SUCCESS = 'CURRENT_WORD_SUCCESS';
 const CURRENT_WORD_ERROR = 'CURRENT_WORD_ERROR';
 const ADD_AVAILABLE_POS = 'ADD_AVAILABLE_POS';
 const REMOVE_AVAILABLE_POS = 'REMOVE_AVAILABLE_POS';
-const SET_DEFAULT_WORD = 'SET_DEFAULT_WORD';
+const RESET_AVAILABLE_POS = 'RESET_AVAILABLE_POS';
 
 export const currentWordPending = () => {
   return {
@@ -39,15 +39,9 @@ export const removeAvailablePos = (pos) => {
   }
 }
 
-export const setAvailablePos = (pos) => {
+export const resetAvailablePos = (pos) => {
   return {
-    type: REMOVE_AVAILABLE_POS,
+    type: RESET_AVAILABLE_POS,
     pos
   }
-
-export const setDefaultWord = () => {
-  return {
-    type: SET_DEFAULT_WORD,
-  }
-}
 }

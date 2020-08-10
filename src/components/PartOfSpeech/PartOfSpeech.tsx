@@ -5,7 +5,6 @@ import { cloneDeep } from 'lodash';
 
 const PartOfSpeechPropTypes = {
   availablePartsOfSpeech: PropTypes.array.isRequired,
-  addAvailablePos: PropTypes.func.isRequired,
   removeAvailablePos: PropTypes.func.isRequired,
   currentWord: PropTypes.any.isRequired,
   value: PropTypes.string.isRequired,
@@ -73,7 +72,6 @@ const mapStateToProps = (state: any) => {
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    addAvailablePos: (pos: string) => dispatch({ type: 'ADD_AVAILABLE_POS', pos}),
     removeAvailablePos: (pos: string) => dispatch({ type: 'REMOVE_AVAILABLE_POS', pos}),
   }
 }

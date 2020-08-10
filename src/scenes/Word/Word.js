@@ -96,7 +96,6 @@ class Word extends React.Component {
 		const isEdited = this.hasBeenEdited(this._originalWord, editedWord);
 		this.setState({ isEdited });
 		this.props.addCurrentWord(editedWord);
-		this.props.setAvailablePos(editedWord.definition.map(def => def.partOfSpeech));
 	}
 
 	async handleSubmit() {
@@ -131,6 +130,7 @@ class Word extends React.Component {
 		this.setState({isClosed: true});
 		this.props.currentWordError(null);
 		this.props.addCurrentWord({});
+		this.props.resetAvailablePos();
 	}
 
 	handleAddPartOfSpeech() {
@@ -183,7 +183,7 @@ const mapDispatchToProps = (dispatch) => {
 		currentWordError: (error) => dispatch({ type: 'CURRENT_WORD_ERROR', error }),
 		addCurrentWord: (currentWord) => dispatch({ type: 'CURRENT_WORD_SUCCESS', currentWord }),
 		addToAllWords: (currentWord) => dispatch({ type: 'ADD_TO_ALL_WORDS', currentWord }),
-		setAvailablePos: (pos) => dispatch({ type: 'SET_AVAILABLE_POS', pos }),
+		resetAvailablePos: () => dispatch({ type: 'RESET_AVAILABLE_POS' }),
 		setDefaultWord: () => dispatch({ type: 'SET_DEFAULT_WORD' }),
 	}
 }
