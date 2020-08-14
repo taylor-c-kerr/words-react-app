@@ -70,7 +70,9 @@ class Home extends React.Component<Props, State> {
 
     return (
       <div className="home-container">
-        <Button icon="add" text="Add a new word" clickHandler={this.sendToAddPage.bind(this)} />
+        <div className="home-buttons-container">
+          <Button icon="add" text="Add a new word" clickHandler={this.sendToAddPage.bind(this)} />
+        </div>
         <div className="words-container">
         {!words ? null : Object.keys(words).map((id, i) => <Tile name={words[id].name} definition={words[id].definition} id={words[id].id} key={`tile-${i}`} />)}
         </div>

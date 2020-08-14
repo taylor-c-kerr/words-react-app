@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import WordsApi from '../../services/api/WordsApi';
-import './styles.scss';
+import './tile.scss';
 import { connect } from 'react-redux';
 import Button from '../Button/Button';
 import PropTypes from 'prop-types';
@@ -87,7 +87,7 @@ class Tile extends React.Component<Props, State> {
 		}
 
 		return (
-			<div className={isDeleted ? 'deletedTile' : 'tile'}>
+			<div className={`tile ${isDeleted ? 'deleted' : ''}`}>
 				<div className='definition' onClick={this.handleClick}>
 					<div className='name'>{this.props.name}</div>
 					{definition}

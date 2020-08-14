@@ -1,6 +1,6 @@
 .tile {
 	border: solid;
-	border-color: black;
+	border-color: #4e4e4e;
 	border-radius: 30px;
 	padding: 10px;
 	margin: 10px;
@@ -9,7 +9,7 @@
 	min-width: 30%;
 	display: flex;
 	flex-direction: column;
-	align-items: center;
+	justify-content: space-between;
 
 	.definition {
 		max-height: 144px;
@@ -28,6 +28,7 @@
 		font-size: 30px;
 		background: lightgrey;
 		border-radius: 15px;
+		width: 100%;
 	}
 
 	.partOfSpeech {

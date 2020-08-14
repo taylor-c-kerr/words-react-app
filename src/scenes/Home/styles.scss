@@ -1,12 +1,16 @@
-.cell {
-	color: red;
-	flex-basis: 0;
-    flex-grow: 1;
-    max-width: 50px;
-}
+.home-container {
+	// display: flex;
+	// flex-direction: column;
+	// justify-content: center;
 
-.words-container {
-	display: flex;
-	flex-flow: row wrap;
-	justify-content: space-around;
+	.home-buttons-container {
+		display: flex;
+		justify-content: center;
+	}
+
+	.words-container {
+		display: flex;
+		flex-flow: row wrap;
+		justify-content: space-around;
+	}
 }
