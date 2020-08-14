@@ -88,15 +88,15 @@ class Tile extends React.Component<Props, State> {
 
 		return (
 			<div className={`tile ${isDeleted ? 'deleted' : ''}`}>
-				<div onClick={this.handleClick}>
+				<div className="definitions-container">
 					<div className='name'>{this.props.name}</div>
 					<div className="definition">
 						{definition}
 					</div>
 				</div>
 				<div className="buttons-container">
-
-				{!this.state.isDeleted ? <Button icon="delete_forever" clickHandler={this.handleDelete}/> : ''}
+					{!this.state.isDeleted ? <Button icon="create" clickHandler={this.handleClick}/> : ''}
+					{!this.state.isDeleted ? <Button icon="delete_forever" clickHandler={this.handleDelete}/> : ''}
 				</div>
 			</div>
 		)
