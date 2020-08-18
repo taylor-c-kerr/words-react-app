@@ -41,6 +41,14 @@
 		width: 100%;
 		display: flex;
 		justify-content: flex-end;
+
+		.tile-button {
+			padding-right: 5px;
+
+			&:last-of-type {
+				padding-right: 10px;
+			}
+		}
 	}
 }
 

@@ -4,16 +4,10 @@ button {
   text-align: center;
   border: none;
   background-color: transparent;
-  margin-right: 5px;
-  padding: 0px;
 
   &:hover {
-    background: #f0f1f2;
+    background-color: #f0f1f2;
     border-radius: 5px;
     cursor: pointer;
-  }
-
-  &:last-of-type {
-    margin-right: 10px;
   }
 }

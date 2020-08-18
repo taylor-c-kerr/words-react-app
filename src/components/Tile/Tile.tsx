@@ -96,8 +96,8 @@ class Tile extends React.Component<Props, State> {
 					</div>
 				</div>
 				<div className="buttons-container">
-					<div className="testing">{!this.state.isDeleted ? <Button icon="create" clickHandler={this.handleClick}/> : ''}</div>
-					{!this.state.isDeleted ? <Button icon="delete_forever" clickHandler={this.handleDelete}/> : ''}
+					<div className="tile-button">{!this.state.isDeleted ? <Button icon="create" clickHandler={this.handleClick}/> : ''}</div>
+					<div className="tile-button">{!this.state.isDeleted ? <Button icon="delete_forever" clickHandler={this.handleDelete}/> : ''}</div>
 				</div>
 			</div>
 		)
