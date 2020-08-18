@@ -5,6 +5,7 @@ import './tile.scss';
 import { connect } from 'react-redux';
 import Button from '../Button/Button';
 import PropTypes from 'prop-types';
+import { isEmpty } from 'lodash';
 
 const TilePropTypes = {
 	id: PropTypes,
@@ -80,7 +81,7 @@ class Tile extends React.Component<Props, State> {
 
 	render() {
 		const {isClicked, isDeleted} = this.state;
-		const definition = this.renderDefinition(this.props.definition);
+		const { definition } = this.props;
 		if (isClicked) {
 			const link = `/${this.props.id}`;
 			return <Redirect push to={link} />; 
@@ -91,11 +92,11 @@ class Tile extends React.Component<Props, State> {
 				<div className="definitions-container">
 					<div className='name'>{this.props.name}</div>
 					<div className="definition">
-						{definition}
+						{!isEmpty(definition) ? this.renderDefinition(definition) : <div className="no-definition">Nothing to display</div>}
 					</div>
 				</div>
 				<div className="buttons-container">
-					{!this.state.isDeleted ? <Button icon="create" clickHandler={this.handleClick}/> : ''}
+					<div className="testing">{!this.state.isDeleted ? <Button icon="create" clickHandler={this.handleClick}/> : ''}</div>
 					{!this.state.isDeleted ? <Button icon="delete_forever" clickHandler={this.handleDelete}/> : ''}
 				</div>
 			</div>
