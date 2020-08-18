@@ -1,11 +1,17 @@
 import React from 'react';
 import './styles.scss';
 
-class Footer extends React.Component {  
+class Footer extends React.Component {
+
+  constructor() {
+    super();
+    this.year = new Date().getFullYear();
+  }
+
   render() {
     return (
       <footer>
-        <p>© 2019 Thoughtful Moose</p>
+        <p>{`© ${this.year} Thoughtful Moose`}</p>
       </footer>
     );
   }
