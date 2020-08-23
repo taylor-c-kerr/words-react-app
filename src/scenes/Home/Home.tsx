@@ -32,22 +32,28 @@ class Home extends React.Component<Props, State> {
       addWordClicked: false
     };
 
-    this.sendToAddPage = this.sendToAddPage.bind(this)
+    this.sendToAddPage = this.sendToAddPage.bind(this);
+    this.getWords = this.getWords.bind(this);
   }
 
   async componentDidMount() {
     if (_.isEmpty(this.props.words)) {
       this.props.setPending();
-      try {
-        const words = await WordsApi.getWords();
-        const wordsToAdd: any = {};
-        words.data.forEach((word: any) => wordsToAdd[word.id] = word);
-        this.props.addWords(wordsToAdd);
-      } catch (error) {
-        this.props.setError(error);
-      }
+      this.getWords();
     }
   }
+
+  async getWords() {
+    try {
+      this.props.setPending();
+      const words = await WordsApi.getWords();
+      const wordsToAdd: any = {};
+      words.data.forEach((word: any) => wordsToAdd[word.id] = word);
+      this.props.addWords(wordsToAdd);
+    } catch (error) {
+      this.props.setError(error);
+    }
+}
 
   sendToAddPage() {
     this.setState({addWordClicked: true});
@@ -71,7 +77,8 @@ class Home extends React.Component<Props, State> {
     return (
       <div className="home-container">
         <div className="home-buttons-container">
-          <Button icon="add" hoverText="Add a new word" hoverDirection="bottom" clickHandler={this.sendToAddPage.bind(this)} />
+          <Button icon="add" hoverText="Add a new word" hoverDirection="bottom" clickHandler={this.sendToAddPage} />
+          <Button icon="refresh" hoverText="Refresh words" hoverDirection="bottom" clickHandler={this.getWords} />
         </div>
         <div className="words-container">
         {!words ? null : Object.keys(words).map((id, i) => <Tile name={words[id].name} definition={words[id].definition} id={words[id].id} key={`tile-${i}`} />)}
