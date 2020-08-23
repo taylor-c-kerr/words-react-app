@@ -1,13 +1,35 @@
-button {
+.button-container {
+  width: 36px;
   display: flex;
-  align-items: center;
-  text-align: center;
-  border: none;
-  background-color: transparent;
+  flex-direction: column;
+  button {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    border: none;
+    background-color: transparent;
 
-  &:hover {
-    background-color: #f0f1f2;
-    border-radius: 5px;
-    cursor: pointer;
+    &.has-hover-text {
+      margin-bottom: 28px;
+    }
+
+    &:hover {
+      margin-bottom: 0px;
+      background-color: #f0f1f2;
+      border-radius: 5px;
+      cursor: pointer;
+
+      + .button-hover-text {
+        display: block;
+        width: 200px;
+        text-align: start;
+        position: relative;
+      }
+    }
   }
+}
+
+.button-hover-text {
+  padding-top: 10px;
+  display: none;
 }

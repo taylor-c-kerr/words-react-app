@@ -5,7 +5,8 @@ import './button.scss';
 const ButtonPropTypes = {
   icon: PropTypes.string,
   text: PropTypes.string,
-  clickHandler: PropTypes.func.isRequired
+  clickHandler: PropTypes.func.isRequired,
+  hoverText: PropTypes.string,
 }
 
 type Props = PropTypes.InferProps<typeof ButtonPropTypes>
@@ -14,7 +15,6 @@ class Button extends React.Component<Props> {
   static propTypes: {};
   constructor(props: Props) {
     super(props);
-
     this.handleClick = this.handleClick.bind(this);
   }
 
@@ -22,12 +22,17 @@ class Button extends React.Component<Props> {
     this.props.clickHandler();
   }
   render() {
-    const { icon, text, clickHandler } = this.props;
+    const { icon, text, clickHandler, hoverText } = this.props;
     
-    return <button onClick={clickHandler}>
-      {icon ? <span className="material-icons">{icon}</span> : ''}
-      {text ? text : ''}
-    </button>
+    return (
+      <div className="button-container">
+        <button onClick={clickHandler} className={hoverText ? 'has-hover-text' : ''}>
+          {icon ? <span className="material-icons">{icon}</span> : ''}
+          {text ? text : ''}
+        </button>
+        {!hoverText ? '' : <div className="button-hover-text">{hoverText}</div>}
+      </div>
+    )
   }
 }
 
