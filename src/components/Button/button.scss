@@ -2,16 +2,17 @@
   width: 36px; // assumes there is an icon
   display: flex;
   flex-direction: column;
+
+  &.bottom button {
+    margin-bottom: 28px;
+  }
+
   button {
     display: flex;
     align-items: center;
     text-align: center;
     border: none;
     background-color: transparent;
-
-    &.has-hover-text.button-hover-text.bottom {
-      margin-bottom: 28px;
-    }
 
     &:hover {
       margin-bottom: 0px;

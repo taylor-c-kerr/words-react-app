@@ -26,7 +26,7 @@ class Button extends React.Component<Props> {
     const { icon, text, clickHandler, hoverText, hoverDirection } = this.props;
     
     return (
-      <div className="button-container">
+      <div className={`button-container ${hoverDirection}`}>
         <button onClick={clickHandler} className={hoverText ? 'has-hover-text' : ''}>
           {icon ? <span className="material-icons">{icon}</span> : ''}
           {text ? text : ''}
