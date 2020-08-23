@@ -154,14 +154,26 @@ class Word extends React.Component {
 			if (pending || name === undefined || definition === undefined) {
 				return <LoadingIcon />;
 			}
+
+			if (_.isEmpty(definition)) {
+				return (
+					<div className="word">
+						<h2>Nothing to display</h2>
+						Go back
+						<Button icon="arrow_back" hoverText="Go to home page" hoverDirection="right" clickHandler={this.handleClose} />
+					</div>
+				)
+			}
 		
-			return <div className="word">
-				{isNewWord ? <input placeholder="Enter a name..." onChange={this.onNameChange}></input> : <p className="word-name">{name}</p>}
-				Definitions:{definition.map((d, i) => <Definition key={`definition-${i}`} definition={d} onDataUpdate={this.onWordEdit} number={i} isNewWord={isNewWord}/>)}
-				<Button icon="add" hoverText="Add Part Of Speech" hoverDirection="right" clickHandler={this.handleAddPartOfSpeech} />
-				{isEdited ? <button onClick={this.handleSubmit}>SAVE</button> : ''}
-				<Button icon="close" hoverText="Close" hoverDirection="right" clickHandler={this.handleClose} />
-			</div>
+			return (
+				<div className="word">
+					{isNewWord ? <input placeholder="Enter a name..." onChange={this.onNameChange}></input> : <p className="word-name">{name}</p>}
+					Definitions:{definition.map((d, i) => <Definition key={`definition-${i}`} definition={d} onDataUpdate={this.onWordEdit} number={i} isNewWord={isNewWord}/>)}
+					<Button icon="add" hoverText="Add Part Of Speech" hoverDirection="right" clickHandler={this.handleAddPartOfSpeech} />
+					{isEdited ? <button onClick={this.handleSubmit}>SAVE</button> : ''}
+					<Button icon="close" hoverText="Close" hoverDirection="right" clickHandler={this.handleClose} />
+				</div>
+			)
 		}
 	}
 }
