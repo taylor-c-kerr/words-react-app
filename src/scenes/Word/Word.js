@@ -158,9 +158,9 @@ class Word extends React.Component {
 			return <div className="word">
 				{isNewWord ? <input placeholder="Enter a name..." onChange={this.onNameChange}></input> : <p className="word-name">{name}</p>}
 				Definitions:{definition.map((d, i) => <Definition key={`definition-${i}`} definition={d} onDataUpdate={this.onWordEdit} number={i} isNewWord={isNewWord}/>)}
-				<Button icon="add" text="Add Part Of Speech" clickHandler={this.handleAddPartOfSpeech} />
+				<Button icon="add" hoverText="Add Part Of Speech" hoverDirection="right" clickHandler={this.handleAddPartOfSpeech} />
 				{isEdited ? <button onClick={this.handleSubmit}>SAVE</button> : ''}
-				<Button icon="close" text="Close" clickHandler={this.handleClose} />
+				<Button icon="close" hoverText="Close" hoverDirection="right" clickHandler={this.handleClose} />
 			</div>
 		}
 	}

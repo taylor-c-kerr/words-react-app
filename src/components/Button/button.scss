@@ -1,5 +1,5 @@
 .button-container {
-  width: 36px;
+  width: 36px; // assumes there is an icon
   display: flex;
   flex-direction: column;
   button {
@@ -9,7 +9,7 @@
     border: none;
     background-color: transparent;
 
-    &.has-hover-text {
+    &.has-hover-text.button-hover-text.bottom {
       margin-bottom: 28px;
     }
 
@@ -19,11 +19,17 @@
       border-radius: 5px;
       cursor: pointer;
 
-      + .button-hover-text {
+      + .button-hover-text.bottom {
         display: block;
         width: 200px;
         text-align: start;
         position: relative;
+      }
+
+      + .button-hover-text.right {
+        display: block;
+        position: absolute;
+        margin-left: 46px
       }
     }
   }

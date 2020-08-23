@@ -70,7 +70,7 @@ class Definition extends React.Component<Props> {
 			<div className="definition">
 				<PartOfSpeech value={partOfSpeech} onOptionChange={this.onDataUpdate.bind(this)} isNewWord={isNewWord} />
 				{ this.mapEntries(entries) }
-				<Button icon="add" text="Add Entry" clickHandler={this.onDataUpdate.bind(this, {})}/>
+				<Button icon="add" hoverText="Add Entry" hoverDirection="right" clickHandler={this.onDataUpdate.bind(this, {})}/>
 			</div>
 		)
 	}
