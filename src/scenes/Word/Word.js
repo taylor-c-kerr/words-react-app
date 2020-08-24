@@ -5,7 +5,7 @@ import WordsApi from '../../services/api/WordsApi/index';
 import Definition from '../../components/Definition/Definition.tsx';
 import Validate from '../../services/validation/index';
 import LoadingIcon from '../../components/LoadingIcon/LoadingIcon';
-import Error from '../../components/Error/Error';
+import Error from '../../components/Error/Error.tsx';
 import { connect } from 'react-redux';
 import Button from '../../components/Button/Button';
 import './word.scss';
