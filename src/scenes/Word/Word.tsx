@@ -1,22 +1,51 @@
 import React from 'react';
-import {Redirect} from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import _ from 'lodash';
 import WordsApi from '../../services/api/WordsApi/index';
-import Definition from '../../components/Definition/Definition.tsx';
+import Definition from '../../components/Definition/Definition';
 import Validate from '../../services/validation/index';
 import LoadingIcon from '../../components/LoadingIcon/LoadingIcon';
-import Error from '../../components/Error/Error.tsx';
-import { connect } from 'react-redux';
+import Error from '../../components/Error/Error';
 import Button from '../../components/Button/Button';
 import './word.scss';
 
-class Word extends React.Component {
-	constructor(props) {
+const WordPropTypes = {
+  addCurrentWord: PropTypes.func.isRequired,
+  addToAllWords: PropTypes.func.isRequired,
+  addViewedWord: PropTypes.func.isRequired,
+  currentWord: PropTypes.any.isRequired,
+  currentWordError: PropTypes.func.isRequired,
+  currentWordPending: PropTypes.func.isRequired,
+  delete: PropTypes.any.isRequired,
+  error: PropTypes.any.isRequired,
+  match: PropTypes.any.isRequired,
+  pending: PropTypes.bool.isRequired,
+  resetAvailablePos: PropTypes.func.isRequired,
+  setDefaultWord: PropTypes.func.isRequired,
+  viewedWords: PropTypes.any.isRequired,
+  words: PropTypes.any.isRequired,
+}
+
+type Props = PropTypes.InferProps<typeof WordPropTypes>;
+type State = {
+  isEdited: boolean;
+  isClosed: boolean;
+  isNewWord: boolean;
+  isSubmitted: boolean;
+}
+
+class Word extends React.Component<Props, State> {
+  static propTypes: {};
+  private _originalWord: any;
+  constructor(props: Props) {
 		super(props);
 		this.state = {
 			isEdited: false,
 			isClosed: false,
-			isNewWord: false,
+      isNewWord: false,
+      isSubmitted: false,
 		}
 		this._originalWord = null;
 		this.onWordEdit = this.onWordEdit.bind(this);
@@ -24,7 +53,7 @@ class Word extends React.Component {
 		this.handleAddPartOfSpeech = this.handleAddPartOfSpeech.bind(this);
 		this.handleClose = this.handleClose.bind(this);
 		this.onNameChange = this.onNameChange.bind(this);
-	}
+  }
 
 	async componentDidMount() {
 		const { id } = this.props.match.params;
@@ -44,7 +73,7 @@ class Word extends React.Component {
 		this._originalWord = this.props.currentWord;
 	}
 
-	async getWord(id) {
+	async getWord(id: string) {
 		try {
 			this.props.currentWordPending();
 			const word = await WordsApi.getWord(id);
@@ -56,7 +85,7 @@ class Word extends React.Component {
 		}
 	}
 
-	hasBeenEdited(previous, current) {
+	hasBeenEdited(previous: any, current: any) {
 		let copy = Object.assign({}, current);
 		copy.definition = [];
 
@@ -67,7 +96,7 @@ class Word extends React.Component {
 			// looping through each definition element/object and adding it to newDef
 			for (let x in def) {
 				if (x=== 'entries') {
-					newDef.entries = def[x].filter(e => e !== '')
+					newDef.entries = def[x].filter((e: any) => e !== '')
 				}
 				else {
 					newDef.partOfSpeech = def[x]
@@ -79,12 +108,12 @@ class Word extends React.Component {
 		return !_.isEqual(previous, copy)
 	}
 
-	onNameChange(e) {
+	onNameChange(e: any) {
 		const name = e.target.value;
 		this.onWordEdit({name})
 	}
 
-	onWordEdit(data, number=null) {
+	onWordEdit(data: any, number: any = null) {
 		const editedWord = _.cloneDeep(this.props.currentWord);
 		if (data.name) {
 			editedWord.name = data.name
@@ -168,7 +197,7 @@ class Word extends React.Component {
 			return (
 				<div className="word">
 					{isNewWord ? <input placeholder="Enter a name..." onChange={this.onNameChange}></input> : <p className="word-name">{name}</p>}
-					Definitions:{definition.map((d, i) => <Definition key={`definition-${i}`} definition={d} onDataUpdate={this.onWordEdit} number={i} isNewWord={isNewWord}/>)}
+					Definitions:{definition.map((d: any, i: number) => <Definition key={`definition-${i}`} definition={d} onDataUpdate={this.onWordEdit} number={i} isNewWord={isNewWord}/>)}
 					<Button icon="add" hoverText="Add Part Of Speech" hoverDirection="right" clickHandler={this.handleAddPartOfSpeech} />
 					{isEdited ? <button onClick={this.handleSubmit}>SAVE</button> : ''}
 					<Button icon="close" hoverText="Close" hoverDirection="right" clickHandler={this.handleClose} />
@@ -178,7 +207,9 @@ class Word extends React.Component {
 	}
 }
 
-const mapStateToProps = (state) => {
+Word.propTypes = WordPropTypes;
+
+const mapStateToProps = (state: any) => {
   return { 
 		words: state.allWordsReducer.words,
 		viewedWords: state.allWordsReducer.viewedWords,
@@ -188,13 +219,13 @@ const mapStateToProps = (state) => {
 		error: state.currentWordReducer.error,
 	}
 }
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch: any) => {
 	return {
-		addViewedWord: (viewedWord) => dispatch({ type: 'ADD_VIEWED_WORD', viewedWord }),
+		addViewedWord: (viewedWord: any) => dispatch({ type: 'ADD_VIEWED_WORD', viewedWord }),
 		currentWordPending: () => dispatch({ type: 'CURRENT_WORD_PENDING' }),
-		currentWordError: (error) => dispatch({ type: 'CURRENT_WORD_ERROR', error }),
-		addCurrentWord: (currentWord) => dispatch({ type: 'CURRENT_WORD_SUCCESS', currentWord }),
-		addToAllWords: (currentWord) => dispatch({ type: 'ADD_TO_ALL_WORDS', currentWord }),
+		currentWordError: (error: any) => dispatch({ type: 'CURRENT_WORD_ERROR', error }),
+		addCurrentWord: (currentWord: any) => dispatch({ type: 'CURRENT_WORD_SUCCESS', currentWord }),
+		addToAllWords: (currentWord: any) => dispatch({ type: 'ADD_TO_ALL_WORDS', currentWord }),
 		resetAvailablePos: () => dispatch({ type: 'RESET_AVAILABLE_POS' }),
 		setDefaultWord: () => dispatch({ type: 'SET_DEFAULT_WORD' }),
 	}
